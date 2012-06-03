@@ -151,10 +151,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+    NSLog(@"Just called: %@", NSStringFromSelector(_cmd));
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        self.detailViewController.detailItem = object;
+        
+        NSInteger row = [[self tableView].indexPathForSelectedRow row];
+        NSLog(@"Here is the value for the row: %d", row);
+        
+        NSDictionary *tweet = [tweets objectAtIndex:row];
+        NSLog(@"Here is the value for the tweet at row %d: %@", row, tweet);
+        
+//        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+        self.detailViewController.detailItem = tweet;
+        NSLog(@"Here is the value for self.detailViewController.detailItem: %@", self.detailViewController.detailItem);
     }
 }
 

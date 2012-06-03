@@ -113,9 +113,9 @@
                     <navigationItem key="navigationItem" title="Event" id="26"/>
                     <connections>
                         <outlet property="detailDescriptionLabel" destination="27" id="28"/>
-                        <outlet property="nameLabel" destination="lMu-kU-dea" id="ahe-Kr-dKC"/>
-                        <outlet property="profileImage" destination="W0A-aJ-Hu5" id="THr-uv-Jzw"/>
-                        <outlet property="tweetLabel" destination="SCu-S1-3xF" id="Wvb-l5-yTI"/>
+                        <outlet property="nameLabel" destination="lMu-kU-dea" id="52h-6A-WFk"/>
+                        <outlet property="profileImage" destination="W0A-aJ-Hu5" id="b1c-Zj-hxy"/>
+                        <outlet property="tweetLabel" destination="SCu-S1-3xF" id="ATf-BI-DaD"/>
                     </connections>
                 </viewController>
             </objects>

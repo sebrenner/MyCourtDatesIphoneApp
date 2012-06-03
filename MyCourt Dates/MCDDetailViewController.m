@@ -9,9 +9,6 @@
 #import "MCDDetailViewController.h"
 
 @interface MCDDetailViewController ()
-@property (strong, nonatomic) IBOutlet UIImageView *profileImage;
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *tweetLabel;
 
 
 
@@ -68,22 +65,7 @@
                 self.profileImage.image = [UIImage imageWithData:data];
             });
         });
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    }    
     
 //  Scott commented out this code.
 //    if (self.detailItem) {
