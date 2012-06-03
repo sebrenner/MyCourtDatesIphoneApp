@@ -1,0 +1,323 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		361290CB157BB12300D34EA9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 361290CA157BB12300D34EA9 /* UIKit.framework */; };
+		361290CD157BB12300D34EA9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 361290CC157BB12300D34EA9 /* Foundation.framework */; };
+		361290CF157BB12300D34EA9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 361290CE157BB12300D34EA9 /* CoreGraphics.framework */; };
+		361290D1157BB12300D34EA9 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 361290D0157BB12300D34EA9 /* CoreData.framework */; };
+		361290D7157BB12300D34EA9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 361290D5157BB12300D34EA9 /* InfoPlist.strings */; };
+		361290D9157BB12300D34EA9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290D8157BB12300D34EA9 /* main.m */; };
+		361290DD157BB12300D34EA9 /* MCDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290DC157BB12300D34EA9 /* MCDAppDelegate.m */; };
+		361290E0157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */; };
+		361290E3157BB12300D34EA9 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */; };
+		361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */; };
+		361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290E8157BB12300D34EA9 /* MCDMasterViewController.m */; };
+		361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290EB157BB12300D34EA9 /* MCDDetailViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		361290C6157BB12300D34EA9 /* MyCourt Dates.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MyCourt Dates.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		361290CA157BB12300D34EA9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		361290CC157BB12300D34EA9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		361290CE157BB12300D34EA9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		361290D0157BB12300D34EA9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		361290D4157BB12300D34EA9 /* MyCourt Dates-Info.plist */ = {isa = PBXFileReference; path = "MyCourt Dates-Info.plist"; sourceTree = "<group>"; };
+		361290D6157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		361290D8157BB12300D34EA9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		361290DA157BB12300D34EA9 /* MyCourt Dates-Prefix.pch */ = {isa = PBXFileReference; path = "MyCourt Dates-Prefix.pch"; sourceTree = "<group>"; };
+		361290DB157BB12300D34EA9 /* MCDAppDelegate.h */ = {isa = PBXFileReference; path = MCDAppDelegate.h; sourceTree = "<group>"; };
+		361290DC157BB12300D34EA9 /* MCDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDAppDelegate.m; sourceTree = "<group>"; };
+		361290DF157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		361290E2157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		361290E5157BB12300D34EA9 /* MyCourt_Dates.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyCourt_Dates.xcdatamodel; sourceTree = "<group>"; };
+		361290E7157BB12300D34EA9 /* MCDMasterViewController.h */ = {isa = PBXFileReference; path = MCDMasterViewController.h; sourceTree = "<group>"; };
+		361290E8157BB12300D34EA9 /* MCDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDMasterViewController.m; sourceTree = "<group>"; };
+		361290EA157BB12300D34EA9 /* MCDDetailViewController.h */ = {isa = PBXFileReference; path = MCDDetailViewController.h; sourceTree = "<group>"; };
+		361290EB157BB12300D34EA9 /* MCDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDDetailViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		361290C3157BB12300D34EA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				361290CB157BB12300D34EA9 /* UIKit.framework in Frameworks */,
+				361290CD157BB12300D34EA9 /* Foundation.framework in Frameworks */,
+				361290CF157BB12300D34EA9 /* CoreGraphics.framework in Frameworks */,
+				361290D1157BB12300D34EA9 /* CoreData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		361290BB157BB12300D34EA9 = {
+			isa = PBXGroup;
+			children = (
+				361290D2157BB12300D34EA9 /* MyCourt Dates */,
+				361290C9157BB12300D34EA9 /* Frameworks */,
+				361290C7157BB12300D34EA9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		361290C7157BB12300D34EA9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				361290C6157BB12300D34EA9 /* MyCourt Dates.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		361290C9157BB12300D34EA9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				361290CA157BB12300D34EA9 /* UIKit.framework */,
+				361290CC157BB12300D34EA9 /* Foundation.framework */,
+				361290CE157BB12300D34EA9 /* CoreGraphics.framework */,
+				361290D0157BB12300D34EA9 /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		361290D2157BB12300D34EA9 /* MyCourt Dates */ = {
+			isa = PBXGroup;
+			children = (
+				361290DB157BB12300D34EA9 /* MCDAppDelegate.h */,
+				361290DC157BB12300D34EA9 /* MCDAppDelegate.m */,
+				361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */,
+				361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */,
+				361290E7157BB12300D34EA9 /* MCDMasterViewController.h */,
+				361290E8157BB12300D34EA9 /* MCDMasterViewController.m */,
+				361290EA157BB12300D34EA9 /* MCDDetailViewController.h */,
+				361290EB157BB12300D34EA9 /* MCDDetailViewController.m */,
+				361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */,
+				361290D3157BB12300D34EA9 /* Supporting Files */,
+			);
+			path = "MyCourt Dates";
+			sourceTree = "<group>";
+		};
+		361290D3157BB12300D34EA9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				361290D4157BB12300D34EA9 /* MyCourt Dates-Info.plist */,
+				361290D5157BB12300D34EA9 /* InfoPlist.strings */,
+				361290D8157BB12300D34EA9 /* main.m */,
+				361290DA157BB12300D34EA9 /* MyCourt Dates-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		361290C5157BB12300D34EA9 /* MyCourt Dates */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 361290EF157BB12300D34EA9 /* Build configuration list for PBXNativeTarget "MyCourt Dates" */;
+			buildPhases = (
+				361290C2157BB12300D34EA9 /* Sources */,
+				361290C3157BB12300D34EA9 /* Frameworks */,
+				361290C4157BB12300D34EA9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MyCourt Dates";
+			productName = "MyCourt Dates";
+			productReference = 361290C6157BB12300D34EA9 /* MyCourt Dates.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		361290BD157BB12300D34EA9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = MCD;
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = 361290C0157BB12300D34EA9 /* Build configuration list for PBXProject "MyCourt Dates" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 361290BB157BB12300D34EA9;
+			productRefGroup = 361290C7157BB12300D34EA9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				361290C5157BB12300D34EA9 /* MyCourt Dates */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		361290C4157BB12300D34EA9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				361290D7157BB12300D34EA9 /* InfoPlist.strings in Resources */,
+				361290E0157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard in Resources */,
+				361290E3157BB12300D34EA9 /* MainStoryboard_iPad.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		361290C2157BB12300D34EA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				361290D9157BB12300D34EA9 /* main.m in Sources */,
+				361290DD157BB12300D34EA9 /* MCDAppDelegate.m in Sources */,
+				361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */,
+				361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */,
+				361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		361290D5157BB12300D34EA9 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				361290D6157BB12300D34EA9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				361290DF157BB12300D34EA9 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				361290E2157BB12300D34EA9 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		361290ED157BB12300D34EA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		361290EE157BB12300D34EA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		361290F0157BB12300D34EA9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MyCourt Dates/MyCourt Dates-Prefix.pch";
+				INFOPLIST_FILE = "MyCourt Dates/MyCourt Dates-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		361290F1157BB12300D34EA9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MyCourt Dates/MyCourt Dates-Prefix.pch";
+				INFOPLIST_FILE = "MyCourt Dates/MyCourt Dates-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		361290C0157BB12300D34EA9 /* Build configuration list for PBXProject "MyCourt Dates" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				361290ED157BB12300D34EA9 /* Debug */,
+				361290EE157BB12300D34EA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		361290EF157BB12300D34EA9 /* Build configuration list for PBXNativeTarget "MyCourt Dates" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				361290F0157BB12300D34EA9 /* Debug */,
+				361290F1157BB12300D34EA9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				361290E5157BB12300D34EA9 /* MyCourt_Dates.xcdatamodel */,
+			);
+			currentVersion = 361290E5157BB12300D34EA9 /* MyCourt_Dates.xcdatamodel */;
+			path = MyCourt_Dates.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 361290BD157BB12300D34EA9 /* Project object */;
+}
