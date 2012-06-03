@@ -151,6 +151,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"%@", NSStringFromSelector(_cmd));
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
         self.detailViewController.detailItem = object;
@@ -159,11 +160,21 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-        [[segue destinationViewController] setDetailItem:object];
+    if ([segue.identifier isEqualToString:@"showEvent"]) {
+        
+        NSInteger row = [[self tableView].indexPathForSelectedRow row];
+        NSDictionary *tweet = [tweets objectAtIndex:row];
+        
+        MCDDetailViewController *detailController = segue.destinationViewController;
+        detailController.detailItem = tweet;
     }
+    
+    // this code was commented out by Scott
+    //    if ([[segue identifier] isEqualToString:@"showEvent"]) {
+    //        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    //        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
+    //        [[segue destinationViewController] setDetailItem:object];
+    //    }
 }
 
 #pragma mark - Fetched results controller

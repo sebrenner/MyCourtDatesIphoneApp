@@ -9,6 +9,13 @@
 #import "MCDDetailViewController.h"
 
 @interface MCDDetailViewController ()
+@property (strong, nonatomic) IBOutlet UIImageView *profileImage;
+@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *tweetLabel;
+
+
+
+
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 @end
@@ -17,6 +24,9 @@
 
 @synthesize detailItem = _detailItem;
 @synthesize detailDescriptionLabel = _detailDescriptionLabel;
+@synthesize profileImage = _profileImage;
+@synthesize nameLabel = _nameLabel;
+@synthesize tweetLabel = _tweetLabel;
 @synthesize masterPopoverController = _masterPopoverController;
 
 #pragma mark - Managing the detail item
@@ -38,10 +48,47 @@
 - (void)configureView
 {
     // Update the user interface for the detail item.
-
     if (self.detailItem) {
-        self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
+        NSDictionary *tweet = self.detailItem;
+        
+        NSString *text = [[tweet objectForKey:@"user"] objectForKey:@"name"];
+        NSString *name = [tweet objectForKey:@"text"];
+        
+        self.tweetLabel.lineBreakMode = UILineBreakModeWordWrap;
+        self.tweetLabel.numberOfLines = 0;
+        
+        self.nameLabel.text = text;
+        self.tweetLabel.text = name;
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString *imageUrl = [[tweet objectForKey:@"user"] objectForKey:@"profile_image_url"];
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.profileImage.image = [UIImage imageWithData:data];
+            });
+        });
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//  Scott commented out this code.
+//    if (self.detailItem) {
+//        self.detailDescriptionLabel.text = [[self.detailItem valueForKey:@"timeStamp"] description];
+//    }
 }
 
 - (void)viewDidLoad
@@ -53,6 +100,9 @@
 
 - (void)viewDidUnload
 {
+    [self setProfileImage:nil];
+    [self setNameLabel:nil];
+    [self setTweetLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     self.detailDescriptionLabel = nil;
