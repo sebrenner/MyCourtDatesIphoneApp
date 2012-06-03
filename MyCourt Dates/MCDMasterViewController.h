@@ -15,6 +15,7 @@
 @interface MCDMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>{
 
     NSArray *tweets;
+    NSArray *events;
 }
 
 
@@ -24,6 +25,6 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 - (void)fetchTweets;
-
+- (void)fetchEvents;
 
 @end

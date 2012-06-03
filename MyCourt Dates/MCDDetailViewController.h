@@ -12,10 +12,11 @@
 
 @property (strong, nonatomic) id detailItem;
 
-@property (strong, nonatomic) IBOutlet UIImageView *profileImage;
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *tweetLabel;
-
+@property (strong, nonatomic) IBOutlet UILabel *eventCaseCaption;
+@property (strong, nonatomic) IBOutlet UILabel *eventCaseNumber;
+@property (strong, nonatomic) IBOutlet UILabel *eventDateTime;
+@property (strong, nonatomic) IBOutlet UILabel *eventSetting;
+@property (strong, nonatomic) IBOutlet UILabel *eventLocation;
 
 
 @property (strong, nonatomic) IBOutlet UILabel *detailDescriptionLabel;

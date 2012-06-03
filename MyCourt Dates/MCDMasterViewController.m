@@ -35,6 +35,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     [self fetchTweets];  // Added by Scott
+    [self fetchEvents];
     
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
@@ -88,6 +89,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    return events.count;
     return tweets.count;  // Added by Scott
 
     
@@ -105,12 +107,23 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    NSDictionary *tweet = [tweets objectAtIndex:indexPath.row];
-    NSString *text = [tweet objectForKey:@"text"];
-    NSString *name = [[tweet objectForKey:@"user"] objectForKey:@"name"];
-    
-    cell.textLabel.text = text;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"by %@", name];
+    NSDictionary *event = [events objectAtIndex:indexPath.row];
+
+    if ([event objectForKey:@"plaintiffs"]==@"STATE OF OHIO") {
+        cell.textLabel.text=[NSString
+                             stringWithFormat:@"State v.%@",
+                             [event objectForKey:@"defendants"]];
+    }else {
+        cell.textLabel.text=[NSString
+                             stringWithFormat:@"%@ v.%@",
+                             [event objectForKey:@"plaintiffs"],
+                             [event objectForKey:@"defendants"]];
+    }
+
+    cell.detailTextLabel.text = [NSString
+                                 stringWithFormat:@"%@ at %@",
+                                 [event objectForKey:@"timeDate"],
+                                 [event objectForKey:@"location"]];
     
     return cell;
     // END added by Scott.  Following code commented out.
@@ -155,7 +168,7 @@
     NSLog(@"Just called: %@", NSStringFromSelector(_cmd));
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.detailViewController.detailItem = [tweets objectAtIndex:indexPath.row];
+        self.detailViewController.detailItem = [events objectAtIndex:indexPath.row];
         
 //        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 //        self.detailViewController.detailItem = object;
@@ -168,10 +181,10 @@
     if ([segue.identifier isEqualToString:@"showEvent"]) {
         
         NSInteger row = [[self tableView].indexPathForSelectedRow row];
-        NSDictionary *tweet = [tweets objectAtIndex:row];
+        NSDictionary *theEvent = [events objectAtIndex:row];
         
         MCDDetailViewController *detailController = segue.destinationViewController;
-        detailController.detailItem = tweet;
+        detailController.detailItem = theEvent;
     }
     
     // this code was commented out by Scott
@@ -298,6 +311,24 @@
         NSError* error;
         
         tweets = [NSJSONSerialization JSONObjectWithData:data
+                                                 options:kNilOptions
+                                                   error:&error];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
+}
+
+- (void)fetchEvents;
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        [NSURL URLWithString: @"http://mycourtdates.com/json.php?id=pp68519"]];
+        NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
+        NSError* error;
+        
+        events = [NSJSONSerialization JSONObjectWithData:data
                                                  options:kNilOptions
                                                    error:&error];
         
