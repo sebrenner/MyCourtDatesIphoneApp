@@ -20,7 +20,6 @@
 @implementation MCDDetailViewController
 
 @synthesize detailItem = _detailItem;
-@synthesize detailDescriptionLabel = _detailDescriptionLabel;
 
 @synthesize eventCaseCaption = _eventCaseCaption;
 @synthesize eventCaseNumber = _eventCaseNumber;
@@ -34,6 +33,7 @@
 
 - (void)setDetailItem:(id)newDetailItem
 {
+    NSLog(@"Executing in detailView: %@", NSStringFromSelector(_cmd));
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
         
@@ -48,7 +48,10 @@
 
 - (void)configureView
 {
+    NSLog(@"Executing in detailView: %@", NSStringFromSelector(_cmd));
     // Update the user interface for the detail item.
+    
+    
     if (self.detailItem) {
         NSDictionary *theEvent = self.detailItem;
         
@@ -87,8 +90,13 @@
 
 - (void)viewDidLoad
 {
+    NSLog(@"Executing in detailView: %@", NSStringFromSelector(_cmd));
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    // get the current event from the appdelegate
+    MCDAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    self.detailItem=appDelegate.currentEvent;
     [self configureView];
 }
 
@@ -101,7 +109,6 @@
     [self setEventCaseNumber:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-    self.detailDescriptionLabel = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

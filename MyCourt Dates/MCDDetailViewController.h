@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MCDAppDelegate.h"
 
 @interface MCDDetailViewController : UIViewController <UISplitViewControllerDelegate>
 
@@ -17,8 +18,5 @@
 @property (strong, nonatomic) IBOutlet UILabel *eventDateTime;
 @property (strong, nonatomic) IBOutlet UILabel *eventSetting;
 @property (strong, nonatomic) IBOutlet UILabel *eventLocation;
-
-
-@property (strong, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 
 @end

@@ -109,21 +109,30 @@
     
     NSDictionary *event = [events objectAtIndex:indexPath.row];
 
-    if ([event objectForKey:@"plaintiffs"]==@"STATE OF OHIO") {
-        cell.textLabel.text=[NSString
-                             stringWithFormat:@"State v.%@",
-                             [event objectForKey:@"defendants"]];
+    NSString *caseNumber=[event objectForKey:@"caseNumber"];    
+    NSString *firstLetter = [caseNumber substringToIndex:1];
+//    NSLog(@"This is the first letter of the case number: %@", firstLetter);
+    
+    if ([firstLetter isEqualToString:@"B"]) {
+//        NSLog(@"Crim Case: This is the string for the plaintiff's key: %@",[event objectForKey:@"plaintiffs"]);
+        NSString *caption=[NSString
+                           stringWithFormat:@"State v.\n    %@",
+                           [[event objectForKey:@"defendants"]capitalizedString]];
+        cell.textLabel.text=caption;
     }else {
-        cell.textLabel.text=[NSString
-                             stringWithFormat:@"%@ v.%@",
-                             [event objectForKey:@"plaintiffs"],
-                             [event objectForKey:@"defendants"]];
+//        NSLog(@"Non-crim case: This is the string for the plaintiff's key: %@",[event objectForKey:@"plaintiffs"]);
+        NSString *caption=[NSString
+                             stringWithFormat:@"%@ v. %@",
+                             [[event objectForKey:@"plaintiffs"]capitalizedString],
+                             [[event objectForKey:@"defendants"]capitalizedString]];
+        cell.textLabel.text=caption;
     }
 
-    cell.detailTextLabel.text = [NSString
+    cell.detailTextLabel.text = [[NSString
                                  stringWithFormat:@"%@ at %@",
                                  [event objectForKey:@"timeDate"],
-                                 [event objectForKey:@"location"]];
+                                 [event objectForKey:@"location"]]
+                                 capitalizedString];
     
     return cell;
     // END added by Scott.  Following code commented out.
@@ -178,21 +187,16 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"showEvent"]) {
-        
-        NSInteger row = [[self tableView].indexPathForSelectedRow row];
-        NSDictionary *theEvent = [events objectAtIndex:row];
-        
-        MCDDetailViewController *detailController = segue.destinationViewController;
-        detailController.detailItem = theEvent;
-    }
+    NSLog(@"Executing: %@", NSStringFromSelector(_cmd));
     
-    // this code was commented out by Scott
-    //    if ([[segue identifier] isEqualToString:@"showEvent"]) {
-    //        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    //        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-    //        [[segue destinationViewController] setDetailItem:object];
-    //    }
+    if ([[segue identifier] isEqualToString:@"showEvent"]) {
+        //  get the row number
+        NSInteger row = [[self tableView].indexPathForSelectedRow row];
+        
+        //  Store the event dictionary in the app delegate
+        MCDAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        appDelegate.currentEvent = [events objectAtIndex:row];
+    }    
 }
 
 #pragma mark - Fetched results controller
