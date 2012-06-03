@@ -27,18 +27,18 @@
 		361290CC157BB12300D34EA9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		361290CE157BB12300D34EA9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		361290D0157BB12300D34EA9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		361290D4157BB12300D34EA9 /* MyCourt Dates-Info.plist */ = {isa = PBXFileReference; path = "MyCourt Dates-Info.plist"; sourceTree = "<group>"; };
+		361290D4157BB12300D34EA9 /* MyCourt Dates-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MyCourt Dates-Info.plist"; sourceTree = "<group>"; };
 		361290D6157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		361290D8157BB12300D34EA9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		361290DA157BB12300D34EA9 /* MyCourt Dates-Prefix.pch */ = {isa = PBXFileReference; path = "MyCourt Dates-Prefix.pch"; sourceTree = "<group>"; };
-		361290DB157BB12300D34EA9 /* MCDAppDelegate.h */ = {isa = PBXFileReference; path = MCDAppDelegate.h; sourceTree = "<group>"; };
+		361290DA157BB12300D34EA9 /* MyCourt Dates-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MyCourt Dates-Prefix.pch"; sourceTree = "<group>"; };
+		361290DB157BB12300D34EA9 /* MCDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDAppDelegate.h; sourceTree = "<group>"; };
 		361290DC157BB12300D34EA9 /* MCDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDAppDelegate.m; sourceTree = "<group>"; };
 		361290DF157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		361290E2157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		361290E5157BB12300D34EA9 /* MyCourt_Dates.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyCourt_Dates.xcdatamodel; sourceTree = "<group>"; };
-		361290E7157BB12300D34EA9 /* MCDMasterViewController.h */ = {isa = PBXFileReference; path = MCDMasterViewController.h; sourceTree = "<group>"; };
+		361290E7157BB12300D34EA9 /* MCDMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDMasterViewController.h; sourceTree = "<group>"; };
 		361290E8157BB12300D34EA9 /* MCDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDMasterViewController.m; sourceTree = "<group>"; };
-		361290EA157BB12300D34EA9 /* MCDDetailViewController.h */ = {isa = PBXFileReference; path = MCDDetailViewController.h; sourceTree = "<group>"; };
+		361290EA157BB12300D34EA9 /* MCDDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDDetailViewController.h; sourceTree = "<group>"; };
 		361290EB157BB12300D34EA9 /* MCDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
