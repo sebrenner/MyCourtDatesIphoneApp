@@ -33,11 +33,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    [self fetchTweets];  // Added by Scott
+    
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (MCDDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+
 }
 
 - (void)viewDidUnload
@@ -84,15 +88,37 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    return tweets.count;  // Added by Scott
+
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    [self configureCell:cell atIndexPath:indexPath];
+    // Added by Scott
+    static NSString *CellIdentifier = @"eventCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    
+    NSDictionary *tweet = [tweets objectAtIndex:indexPath.row];
+    NSString *text = [tweet objectForKey:@"text"];
+    NSString *name = [[tweet objectForKey:@"user"] objectForKey:@"name"];
+    
+    cell.textLabel.text = text;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"by %@", name];
+    
     return cell;
+    // END added by Scott.  Following code commented out.
+    
+    
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+//    [self configureCell:cell atIndexPath:indexPath];
+//    return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -244,5 +270,26 @@
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
 }
+
+#pragma mark - JSON Methods
+
+- (void)fetchTweets
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData* data = [NSData dataWithContentsOfURL:
+                        [NSURL URLWithString: @"https://api.twitter.com/1/statuses/public_timeline.json"]];
+        
+        NSError* error;
+        
+        tweets = [NSJSONSerialization JSONObjectWithData:data
+                                                 options:kNilOptions
+                                                   error:&error];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    });
+}
+
 
 @end

@@ -12,11 +12,18 @@
 
 #import <CoreData/CoreData.h>
 
-@interface MCDMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface MCDMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>{
+
+    NSArray *tweets;
+}
+
 
 @property (strong, nonatomic) MCDDetailViewController *detailViewController;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+- (void)fetchTweets;
+
 
 @end
