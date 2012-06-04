@@ -33,8 +33,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
-    [self fetchTweets];  // Added by Scott
     [self fetchEvents];
     
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
@@ -90,8 +88,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return events.count;
-    return tweets.count;  // Added by Scott
-
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
@@ -116,20 +112,20 @@
     if ([firstLetter isEqualToString:@"B"]) {
 //        NSLog(@"Crim Case: This is the string for the plaintiff's key: %@",[event objectForKey:@"plaintiffs"]);
         NSString *caption=[NSString
-                           stringWithFormat:@"State v.\n    %@",
+                           stringWithFormat:@"State v.\n%@",
                            [[event objectForKey:@"defendants"]capitalizedString]];
         cell.textLabel.text=caption;
     }else {
 //        NSLog(@"Non-crim case: This is the string for the plaintiff's key: %@",[event objectForKey:@"plaintiffs"]);
         NSString *caption=[NSString
-                             stringWithFormat:@"%@ v. %@",
+                             stringWithFormat:@"%@ v.\n%@",
                              [[event objectForKey:@"plaintiffs"]capitalizedString],
                              [[event objectForKey:@"defendants"]capitalizedString]];
         cell.textLabel.text=caption;
     }
 
     cell.detailTextLabel.text = [[NSString
-                                 stringWithFormat:@"%@ at %@",
+                                 stringWithFormat:@"%@\nat %@",
                                  [event objectForKey:@"timeDate"],
                                  [event objectForKey:@"location"]]
                                  capitalizedString];
@@ -146,7 +142,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
-    return YES;
+    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -305,24 +301,6 @@
 }
 
 #pragma mark - JSON Methods
-
-- (void)fetchTweets
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString: @"https://api.twitter.com/1/statuses/public_timeline.json"]];
-        
-        NSError* error;
-        
-        tweets = [NSJSONSerialization JSONObjectWithData:data
-                                                 options:kNilOptions
-                                                   error:&error];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-    });
-}
 
 - (void)fetchEvents;
 {

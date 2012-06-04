@@ -39,17 +39,17 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Case Caption" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" id="phq-AM-6qj" userLabel="caseCaption">
-                                            <rect key="frame" x="11" y="21" width="154" height="29"/>
+                                            <rect key="frame" x="11" y="24" width="128" height="24"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Time &amp; Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" id="IrO-Gv-dkC" userLabel="timeLocation">
-                                            <rect key="frame" x="11" y="50" width="131" height="22"/>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Time &amp; Location" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" id="IrO-Gv-dkC" userLabel="timeLocation">
+                                            <rect key="frame" x="11" y="48" width="131" height="22"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
                                     </subviews>
@@ -152,7 +152,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7mW-Wd-Jg7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tabBarController definesPresentationContext="YES" id="IDg-Hi-guo" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="lWg-hS-xee"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="iXM-Sa-hLE">
                         <rect key="frame" x="129" y="330" width="163" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -167,6 +167,21 @@
             <point key="canvasLocation" x="976" y="72"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="MCDDetailViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDDetailViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="eventCaseCaption" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventCaseNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventDateTime" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventLocation" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventSetting" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MCDMasterViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDMasterViewController.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

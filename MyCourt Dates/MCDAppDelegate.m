@@ -24,8 +24,8 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         UISplitViewController *splitViewController = (UISplitViewController *)self.window.rootViewController;
         UINavigationController *navigationController = [splitViewController.viewControllers lastObject];
+        NSLog(@"This is UINavigationController *navigationController: %@",  navigationController );
         splitViewController.delegate = (id)navigationController.topViewController;
-        
         UINavigationController *masterNavigationController = [splitViewController.viewControllers objectAtIndex:0];
         MCDMasterViewController *controller = (MCDMasterViewController *)masterNavigationController.topViewController;
         controller.managedObjectContext = self.managedObjectContext;
