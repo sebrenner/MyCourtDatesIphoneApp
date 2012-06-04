@@ -306,7 +306,7 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString: @"http://mycourtdates.com/json.php?id=pp68519"]];
+                        [NSURL URLWithString: @"http://mycourtdates.com/json.php?id=73125"]];
         NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
         NSError* error;
         
@@ -315,8 +315,13 @@
                                                               error:&error];
         
         NSMutableDictionary *sections=[[NSMutableDictionary alloc]initWithCapacity:200];
+        [sections setObject:@"Scott" forKey:@"taco"];
+        NSLog(@"My sections dictionary: %@", sections);
+        
         
         // Loop through the books and create our keys
+        // we are trying to creae a dictionary of keyed on date
+        
         for (NSDictionary *theEvent in rawEvents)
         {
             //foreach event add it to the end of the array that is the value for the key that is the date of the event.
@@ -333,6 +338,8 @@
                 
                 // Add the current event to the array
                 NSLog(@"The class of arrayOfEvents: %@", NSStringFromClass([arrayOfEvents class])); 
+                
+                
                 
                 [arrayOfEvents addObject:theEvent];
 
