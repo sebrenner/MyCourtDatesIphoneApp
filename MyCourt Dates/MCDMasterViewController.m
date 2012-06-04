@@ -315,48 +315,26 @@
                                                               error:&error];
         
         NSMutableDictionary *sections=[[NSMutableDictionary alloc]initWithCapacity:200];
-        [sections setObject:@"Scott" forKey:@"taco"];
-        NSLog(@"My sections dictionary: %@", sections);
         
-        
-        // Loop through the books and create our keys
-        // we are trying to creae a dictionary of keyed on date
+        // Loop through the events and create a dictionary of keyed on date.
+        // The values are arrays of events set on that date.
         
         for (NSDictionary *theEvent in rawEvents)
         {
-            //foreach event add it to the end of the array that is the value for the key that is the date of the event.
+            NSMutableArray *arrayOfEvents;
             NSString *date = [[theEvent objectForKey:@"timeDate"] substringToIndex:10];
-            NSLog(@"This should be the date: %@",date);
-                        
             if ([sections objectForKey:date]) {
-                // Entry for date exists.  Add event to mutable array.
-                NSLog(@"%@ is ALREADY a key.  Adding event: %@ .",date,theEvent);
-
-                // Get the existing array for the date of the event
-                NSMutableArray *arrayOfEvents = [sections objectForKey:date];
-                NSLog(@"The array of existing events: %@.",arrayOfEvents);
-                
-                // Add the current event to the array
-                NSLog(@"The class of arrayOfEvents: %@", NSStringFromClass([arrayOfEvents class])); 
-                
-                
-                
+                arrayOfEvents=[[NSMutableArray alloc]
+                               initWithObjects:[sections objectForKey:date],Nil];
                 [arrayOfEvents addObject:theEvent];
-
             }else {
-                // No entry for date exists.  Create a mutable array with the event
-                // and add the mutable array to the dictionary
-                NSLog(@"%@ is NOT a key.  Adding event:.",date);
-
-                NSMutableArray *arrayOfEvents = [[NSMutableArray alloc] initWithObjects:theEvent, nil];
-//                NSLog(@"This is the date: %@", date);
-                NSLog(@"This is the arrayOfEvents: %@", arrayOfEvents);                
-                [sections setObject:theEvent forKey:date];
-                NSLog(@"This is the dictionary: %@", sections);
-
-            }            
+                arrayOfEvents = [[NSMutableArray alloc] initWithObjects:theEvent, nil];
+            }
+            [sections setObject:arrayOfEvents forKey:date];
         }
-        NSLog(@"This should be the size of mutableDictionary of sections : %@",[sections count]);
+        NSLog(@"Sections : %@",sections);
+        NSLog(@"This should be the size of mutableDictionary of sections : %d",[sections count]);
+
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
