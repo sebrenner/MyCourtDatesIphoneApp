@@ -92,7 +92,7 @@
     NSInteger numberOfRow = [[self->events valueForKey:[
                                     [[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]
                                             objectAtIndex:section]] count];
-    NSLog(@"There are %d rows in section %d", numberOfRow,section);
+//    NSLog(@"There are %d rows in section %d", numberOfRow,section);
 
     return numberOfRow;
 
@@ -104,19 +104,19 @@
 {
     NSString *headerString =[[[self->events allKeys]
                               sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
-    NSLog(@"This is a section header:%@", headerString); 
+//    NSLog(@"This is a section header:%@", headerString); 
     return headerString;
 }
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    NSArray *titles =[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    NSLog(@"Title for tableview: %@", titles);
-    return titles;
-}
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+//    NSArray *titles =[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+////    NSLog(@"Title for tableview: %@", titles);
+//    return titles;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+//    NSLog(@"%@", NSStringFromSelector(_cmd));
     // Added by Scott
     static NSString *CellIdentifier = @"eventCell";
     
@@ -124,44 +124,40 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
-    // this is bad, it is getting 
-    // the whole array for the date, not just the single event.
-    NSArray *myDictionaryKeys=[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
-    
-    NSMutableArray *daysEvents=[self->events valueForKey:[myDictionaryKeys objectAtIndex:indexPath.section]];
-    
-    for (id theEvent in daysEvents) {
-        NSLog(@"An event %@.", theEvent);
+
+    NSDictionary *event = [[self->events valueForKey:[[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];  
+
+    // Setup case number
+    NSString *caseNumber=[event objectForKey:@"caseNumber"];
+    if ([caseNumber isEqualToString:@""]) {
+        caseNumber=@"Sealed";
+    }
+
+    // Setup party names and caption
+    NSString *plaintiffs;
+    if ([[event objectForKey:@"plaintiffs"] isEqualToString:@"vs."] ) {
+        plaintiffs=@"Sealed";
+    }else{
+        plaintiffs=[[event objectForKey:@"plaintiffs"] capitalizedString];
+    }
+
+    NSString *defendants;
+    if ([[event objectForKey:@"defendants"] isEqualToString:@""]) {
+        defendants=@"Sealed";
+    }else {
+        defendants=[[event objectForKey:@"defendants"] capitalizedString];
     }
     
-    NSDictionary *event=[[daysEvents sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.row];
-
-//    NSDictionary *event = [
-//                           [self->events valueForKey:[
-//                                                      [
-//                                                       [self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]
-//                                                      objectAtIndex:indexPath.section
-//                                                      ]
-//                            ] objectAtIndex:indexPath.row
-//                           ];  
-    
-    NSString *caseNumber=[event objectForKey:@"caseNumber"];
     NSString *firstLetter = [caseNumber substringToIndex:1];
-//    NSLog(@"This is the first letter of the case number: %@", firstLetter);
-    
     if ([firstLetter isEqualToString:@"B"]) {
 //        NSLog(@"Crim Case: This is the string for the plaintiff's key: %@",[event objectForKey:@"plaintiffs"]);
         NSString *caption=[NSString
-                           stringWithFormat:@"State v.\n%@",
-                           [[event objectForKey:@"defendants"]capitalizedString]];
+                           stringWithFormat:@"State v.\n%@", defendants];
         cell.textLabel.text=caption;
     }else {
 //        NSLog(@"Non-crim case: This is the string for the plaintiff's key: %@",[event objectForKey:@"plaintiffs"]);
         NSString *caption=[NSString
-                             stringWithFormat:@"%@ v.\n%@",
-                             [[event objectForKey:@"plaintiffs"]capitalizedString],
-                             [[event objectForKey:@"defendants"]capitalizedString]];
+                           stringWithFormat:@"%@ v.\n%@", plaintiffs,defendants];
         cell.textLabel.text=caption;
     }
 
@@ -214,14 +210,10 @@
     NSLog(@"Just called: %@", NSStringFromSelector(_cmd));
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-//        self.detailViewController.detailItem = [events objectAtIndex:indexPath.row];
-        self.detailViewController.detailItem = [[self->events valueForKey:[[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
-
-        //  Store the event dictionary in the app delegate
-        MCDAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        appDelegate.currentEvent = [[self->events valueForKey:[[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
         
-        appDelegate.currentEvent = self.detailViewController.detailItem;
+        self.detailViewController.detailItem = [[self->events valueForKey:[[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        NSLog(@"This is the event to be passed to the detailItem: %@", self.detailViewController.detailItem );
+
         
 //        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 //        self.detailViewController.detailItem = object;
@@ -232,10 +224,16 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSLog(@"Executing: %@", NSStringFromSelector(_cmd));
-    
+    NSLog(@"the Sender is: %@", sender);
     if ([[segue identifier] isEqualToString:@"showEvent"]) {
-        //  get the row number
-        NSInteger row = [[self tableView].indexPathForSelectedRow row];
+        //  get the section and row number
+        NSInteger theSection = [[self tableView].indexPathForSelectedRow section];
+        NSInteger theRow = [[self tableView].indexPathForSelectedRow row];
+        NSDictionary *theEvent = [[self->events valueForKey:[[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:theSection]] objectAtIndex:theRow];  
+
+        //  Store the event dictionary in the app delegate
+        MCDAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];        
+        appDelegate.currentEvent = theEvent;
     }    
 }
 
@@ -350,8 +348,8 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData* data = [NSData dataWithContentsOfURL:
-                        [NSURL URLWithString: @"http://mycourtdates.com/json.php?id=73125"]];
-        NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
+                        [NSURL URLWithString: @"http://mycourtdates.com/json.php?id=71655"]];
+//        NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
         NSError* error;
         
         NSArray *rawEvents = [NSJSONSerialization JSONObjectWithData:data
@@ -378,8 +376,8 @@
             }
             [self->events setObject:arrayOfEvents forKey:date];
         }
-        NSLog(@"Events : %@",self->events);
-        NSLog(@"This should be the size of mutableDictionary of sections : %d",[self->events count]);
+//        NSLog(@"Events : %@",self->events);
+//        NSLog(@"This should be the size of mutableDictionary of sections : %d",[self->events count]);
 
 
         dispatch_async(dispatch_get_main_queue(), ^{

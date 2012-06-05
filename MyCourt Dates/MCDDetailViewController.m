@@ -10,9 +10,6 @@
 
 @interface MCDDetailViewController ()
 
-
-
-
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 @end
