@@ -82,19 +82,41 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    return [[self->events allKeys] count];
+    return [self->events count];
     return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return events.count;
-    
+    NSInteger numberOfRow = [[self->events valueForKey:[
+                                    [[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]
+                                            objectAtIndex:section]] count];
+    NSLog(@"There are %d rows in section %d", numberOfRow,section);
+
+    return numberOfRow;
+
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *headerString =[[[self->events allKeys]
+                              sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
+    NSLog(@"This is a section header:%@", headerString); 
+    return headerString;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    NSArray *titles =[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    NSLog(@"Title for tableview: %@", titles);
+    return titles;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"%@", NSStringFromSelector(_cmd));
     // Added by Scott
     static NSString *CellIdentifier = @"eventCell";
     
@@ -103,9 +125,28 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    NSDictionary *event = [events objectAtIndex:indexPath.row];
+    // this is bad, it is getting 
+    // the whole array for the date, not just the single event.
+    NSArray *myDictionaryKeys=[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    NSMutableArray *daysEvents=[self->events valueForKey:[myDictionaryKeys objectAtIndex:indexPath.section]];
+    
+    for (id theEvent in daysEvents) {
+        NSLog(@"An event %@.", theEvent);
+    }
+    
+    NSDictionary *event=[[daysEvents sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.row];
 
-    NSString *caseNumber=[event objectForKey:@"caseNumber"];    
+//    NSDictionary *event = [
+//                           [self->events valueForKey:[
+//                                                      [
+//                                                       [self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)]
+//                                                      objectAtIndex:indexPath.section
+//                                                      ]
+//                            ] objectAtIndex:indexPath.row
+//                           ];  
+    
+    NSString *caseNumber=[event objectForKey:@"caseNumber"];
     NSString *firstLetter = [caseNumber substringToIndex:1];
 //    NSLog(@"This is the first letter of the case number: %@", firstLetter);
     
@@ -173,7 +214,14 @@
     NSLog(@"Just called: %@", NSStringFromSelector(_cmd));
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.detailViewController.detailItem = [events objectAtIndex:indexPath.row];
+//        self.detailViewController.detailItem = [events objectAtIndex:indexPath.row];
+        self.detailViewController.detailItem = [[self->events valueForKey:[[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+
+        //  Store the event dictionary in the app delegate
+        MCDAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        appDelegate.currentEvent = [[self->events valueForKey:[[[self->events allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        
+        appDelegate.currentEvent = self.detailViewController.detailItem;
         
 //        NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
 //        self.detailViewController.detailItem = object;
@@ -188,10 +236,6 @@
     if ([[segue identifier] isEqualToString:@"showEvent"]) {
         //  get the row number
         NSInteger row = [[self tableView].indexPathForSelectedRow row];
-        
-        //  Store the event dictionary in the app delegate
-        MCDAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        appDelegate.currentEvent = [events objectAtIndex:row];
     }    
 }
 
@@ -314,7 +358,7 @@
                                                             options:kNilOptions
                                                               error:&error];
         
-        NSMutableDictionary *sections=[[NSMutableDictionary alloc]initWithCapacity:200];
+        self->events=[[NSMutableDictionary alloc]initWithCapacity:200];
         
         // Loop through the events and create a dictionary of keyed on date.
         // The values are arrays of events set on that date.
@@ -323,17 +367,19 @@
         {
             NSMutableArray *arrayOfEvents;
             NSString *date = [[theEvent objectForKey:@"timeDate"] substringToIndex:10];
-            if ([sections objectForKey:date]) {
-                arrayOfEvents=[[NSMutableArray alloc]
-                               initWithObjects:[sections objectForKey:date],Nil];
+            
+            if ([self->events objectForKey:date]) {
+                // If there is is an existing dictionary entry
+                arrayOfEvents=[[NSMutableArray alloc]initWithArray:
+                               [self->events objectForKey:date]];
                 [arrayOfEvents addObject:theEvent];
             }else {
                 arrayOfEvents = [[NSMutableArray alloc] initWithObjects:theEvent, nil];
             }
-            [sections setObject:arrayOfEvents forKey:date];
+            [self->events setObject:arrayOfEvents forKey:date];
         }
-        NSLog(@"Sections : %@",sections);
-        NSLog(@"This should be the size of mutableDictionary of sections : %d",[sections count]);
+        NSLog(@"Events : %@",self->events);
+        NSLog(@"This should be the size of mutableDictionary of sections : %d",[self->events count]);
 
 
         dispatch_async(dispatch_get_main_queue(), ^{

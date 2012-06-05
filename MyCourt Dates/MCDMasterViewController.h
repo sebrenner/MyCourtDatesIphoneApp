@@ -14,7 +14,7 @@
 
 @interface MCDMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>{
 
-    NSArray *events;
+    NSMutableDictionary *events;
 }
 
 
