@@ -20,6 +20,11 @@
 		361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290E8157BB12300D34EA9 /* MCDMasterViewController.m */; };
 		361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290EB157BB12300D34EA9 /* MCDDetailViewController.m */; };
 		36CA3640157DB280002F91C6 /* MCDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CA363F157DB280002F91C6 /* MCDWebViewController.m */; };
+		36CA364C157DC6CC002F91C6 /* 11-clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3647157DC6CC002F91C6 /* 11-clock.png */; };
+		36CA364D157DC6CC002F91C6 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3648157DC6CC002F91C6 /* 112-group.png */; };
+		36CA364E157DC6CC002F91C6 /* 18-envelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3649157DC6CC002F91C6 /* 18-envelope.png */; };
+		36CA364F157DC6CC002F91C6 /* 33-cabinet.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA364A157DC6CC002F91C6 /* 33-cabinet.png */; };
+		36CA3650157DC6CC002F91C6 /* 83-calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA364B157DC6CC002F91C6 /* 83-calendar.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +48,11 @@
 		361290EB157BB12300D34EA9 /* MCDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDDetailViewController.m; sourceTree = "<group>"; };
 		36CA363E157DB280002F91C6 /* MCDWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDWebViewController.h; sourceTree = "<group>"; };
 		36CA363F157DB280002F91C6 /* MCDWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDWebViewController.m; sourceTree = "<group>"; };
+		36CA3647157DC6CC002F91C6 /* 11-clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock.png"; sourceTree = "<group>"; };
+		36CA3648157DC6CC002F91C6 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "112-group.png"; sourceTree = "<group>"; };
+		36CA3649157DC6CC002F91C6 /* 18-envelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "18-envelope.png"; sourceTree = "<group>"; };
+		36CA364A157DC6CC002F91C6 /* 33-cabinet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "33-cabinet.png"; sourceTree = "<group>"; };
+		36CA364B157DC6CC002F91C6 /* 83-calendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "83-calendar.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,12 +120,25 @@
 		361290D3157BB12300D34EA9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				36CA3646157DC6CC002F91C6 /* tabBarIcons */,
 				361290D4157BB12300D34EA9 /* MyCourt Dates-Info.plist */,
 				361290D5157BB12300D34EA9 /* InfoPlist.strings */,
 				361290D8157BB12300D34EA9 /* main.m */,
 				361290DA157BB12300D34EA9 /* MyCourt Dates-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		36CA3646157DC6CC002F91C6 /* tabBarIcons */ = {
+			isa = PBXGroup;
+			children = (
+				36CA3647157DC6CC002F91C6 /* 11-clock.png */,
+				36CA3648157DC6CC002F91C6 /* 112-group.png */,
+				36CA3649157DC6CC002F91C6 /* 18-envelope.png */,
+				36CA364A157DC6CC002F91C6 /* 33-cabinet.png */,
+				36CA364B157DC6CC002F91C6 /* 83-calendar.png */,
+			);
+			path = tabBarIcons;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +195,11 @@
 				361290D7157BB12300D34EA9 /* InfoPlist.strings in Resources */,
 				361290E0157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard in Resources */,
 				361290E3157BB12300D34EA9 /* MainStoryboard_iPad.storyboard in Resources */,
+				36CA364C157DC6CC002F91C6 /* 11-clock.png in Resources */,
+				36CA364D157DC6CC002F91C6 /* 112-group.png in Resources */,
+				36CA364E157DC6CC002F91C6 /* 18-envelope.png in Resources */,
+				36CA364F157DC6CC002F91C6 /* 33-cabinet.png in Resources */,
+				36CA3650157DC6CC002F91C6 /* 83-calendar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
