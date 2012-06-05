@@ -19,6 +19,7 @@
 		361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */; };
 		361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290E8157BB12300D34EA9 /* MCDMasterViewController.m */; };
 		361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290EB157BB12300D34EA9 /* MCDDetailViewController.m */; };
+		36CA3640157DB280002F91C6 /* MCDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CA363F157DB280002F91C6 /* MCDWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,8 @@
 		361290E8157BB12300D34EA9 /* MCDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDMasterViewController.m; sourceTree = "<group>"; };
 		361290EA157BB12300D34EA9 /* MCDDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDDetailViewController.h; sourceTree = "<group>"; };
 		361290EB157BB12300D34EA9 /* MCDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDDetailViewController.m; sourceTree = "<group>"; };
+		36CA363E157DB280002F91C6 /* MCDWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDWebViewController.h; sourceTree = "<group>"; };
+		36CA363F157DB280002F91C6 /* MCDWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDWebViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +94,8 @@
 				361290DB157BB12300D34EA9 /* MCDAppDelegate.h */,
 				361290DC157BB12300D34EA9 /* MCDAppDelegate.m */,
 				361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */,
+				36CA363E157DB280002F91C6 /* MCDWebViewController.h */,
+				36CA363F157DB280002F91C6 /* MCDWebViewController.m */,
 				361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */,
 				361290E7157BB12300D34EA9 /* MCDMasterViewController.h */,
 				361290E8157BB12300D34EA9 /* MCDMasterViewController.m */,
@@ -182,6 +187,7 @@
 				361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */,
 				361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */,
 				361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */,
+				36CA3640157DB280002F91C6 /* MCDWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +309,7 @@
 				361290F1157BB12300D34EA9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
