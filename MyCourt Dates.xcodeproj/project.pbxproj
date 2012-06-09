@@ -19,12 +19,14 @@
 		361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */; };
 		361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290E8157BB12300D34EA9 /* MCDMasterViewController.m */; };
 		361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290EB157BB12300D34EA9 /* MCDDetailViewController.m */; };
+		368370F1157EBB6F00F2A7D8 /* MCDEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 368370F0157EBB6F00F2A7D8 /* MCDEvents.m */; };
 		36CA3640157DB280002F91C6 /* MCDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CA363F157DB280002F91C6 /* MCDWebViewController.m */; };
 		36CA364C157DC6CC002F91C6 /* 11-clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3647157DC6CC002F91C6 /* 11-clock.png */; };
 		36CA364D157DC6CC002F91C6 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3648157DC6CC002F91C6 /* 112-group.png */; };
 		36CA364E157DC6CC002F91C6 /* 18-envelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3649157DC6CC002F91C6 /* 18-envelope.png */; };
 		36CA364F157DC6CC002F91C6 /* 33-cabinet.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA364A157DC6CC002F91C6 /* 33-cabinet.png */; };
 		36CA3650157DC6CC002F91C6 /* 83-calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA364B157DC6CC002F91C6 /* 83-calendar.png */; };
+		36CA3653157DCD2D002F91C6 /* MCDTabEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CA3652157DCD2D002F91C6 /* MCDTabEventViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		361290E8157BB12300D34EA9 /* MCDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDMasterViewController.m; sourceTree = "<group>"; };
 		361290EA157BB12300D34EA9 /* MCDDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDDetailViewController.h; sourceTree = "<group>"; };
 		361290EB157BB12300D34EA9 /* MCDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDDetailViewController.m; sourceTree = "<group>"; };
+		368370EF157EBB6F00F2A7D8 /* MCDEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDEvents.h; sourceTree = "<group>"; };
+		368370F0157EBB6F00F2A7D8 /* MCDEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDEvents.m; sourceTree = "<group>"; };
 		36CA363E157DB280002F91C6 /* MCDWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDWebViewController.h; sourceTree = "<group>"; };
 		36CA363F157DB280002F91C6 /* MCDWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDWebViewController.m; sourceTree = "<group>"; };
 		36CA3647157DC6CC002F91C6 /* 11-clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock.png"; sourceTree = "<group>"; };
@@ -53,6 +57,8 @@
 		36CA3649157DC6CC002F91C6 /* 18-envelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "18-envelope.png"; sourceTree = "<group>"; };
 		36CA364A157DC6CC002F91C6 /* 33-cabinet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "33-cabinet.png"; sourceTree = "<group>"; };
 		36CA364B157DC6CC002F91C6 /* 83-calendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "83-calendar.png"; sourceTree = "<group>"; };
+		36CA3651157DCD2D002F91C6 /* MCDTabEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MCDTabEventViewController.h; path = "MyCourt Dates/MCDTabEventViewController.h"; sourceTree = SOURCE_ROOT; };
+		36CA3652157DCD2D002F91C6 /* MCDTabEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MCDTabEventViewController.m; path = "MyCourt Dates/MCDTabEventViewController.m"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,8 +112,12 @@
 				361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */,
 				36CA363E157DB280002F91C6 /* MCDWebViewController.h */,
 				36CA363F157DB280002F91C6 /* MCDWebViewController.m */,
+				368370EF157EBB6F00F2A7D8 /* MCDEvents.h */,
+				368370F0157EBB6F00F2A7D8 /* MCDEvents.m */,
 				361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */,
 				361290E7157BB12300D34EA9 /* MCDMasterViewController.h */,
+				36CA3651157DCD2D002F91C6 /* MCDTabEventViewController.h */,
+				36CA3652157DCD2D002F91C6 /* MCDTabEventViewController.m */,
 				361290E8157BB12300D34EA9 /* MCDMasterViewController.m */,
 				361290EA157BB12300D34EA9 /* MCDDetailViewController.h */,
 				361290EB157BB12300D34EA9 /* MCDDetailViewController.m */,
@@ -216,6 +226,8 @@
 				361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */,
 				361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */,
 				36CA3640157DB280002F91C6 /* MCDWebViewController.m in Sources */,
+				36CA3653157DCD2D002F91C6 /* MCDTabEventViewController.m in Sources */,
+				368370F1157EBB6F00F2A7D8 /* MCDEvents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

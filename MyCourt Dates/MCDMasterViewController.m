@@ -7,7 +7,6 @@
 //
 
 #import "MCDMasterViewController.h"
-
 #import "MCDDetailViewController.h"
 
 @interface MCDMasterViewController ()
@@ -33,6 +32,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    MCDEvents *theEvents;
+    [theEvents downloadAndParse:@"73125"];
+    
     [self fetchEvents];
 //    self.navigationItem.title= @"Scott was here";
     
