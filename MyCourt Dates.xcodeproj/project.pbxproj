@@ -19,6 +19,7 @@
 		361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */; };
 		361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290E8157BB12300D34EA9 /* MCDMasterViewController.m */; };
 		361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290EB157BB12300D34EA9 /* MCDDetailViewController.m */; };
+		362508351584F9CA001F3AEC /* 19-gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 362508341584F9CA001F3AEC /* 19-gear.png */; };
 		362842571583CCB40039D943 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 362842561583CCB40039D943 /* MainStoryboard_iPad.storyboard */; };
 		3628425A1583D1300039D943 /* MCDScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842591583D1300039D943 /* MCDScheduleViewController.m */; };
 		3628425D1583D1480039D943 /* MCDDocumentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3628425C1583D1480039D943 /* MCDDocumentsViewController.m */; };
@@ -56,6 +57,7 @@
 		361290E8157BB12300D34EA9 /* MCDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDMasterViewController.m; sourceTree = "<group>"; };
 		361290EA157BB12300D34EA9 /* MCDDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDDetailViewController.h; sourceTree = "<group>"; };
 		361290EB157BB12300D34EA9 /* MCDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDDetailViewController.m; sourceTree = "<group>"; };
+		362508341584F9CA001F3AEC /* 19-gear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "19-gear.png"; sourceTree = "<group>"; };
 		362842561583CCB40039D943 /* MainStoryboard_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		362842581583D1300039D943 /* MCDScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDScheduleViewController.h; sourceTree = "<group>"; };
 		362842591583D1300039D943 /* MCDScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDScheduleViewController.m; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		36CA3646157DC6CC002F91C6 /* tabBarIcons */ = {
 			isa = PBXGroup;
 			children = (
+				362508341584F9CA001F3AEC /* 19-gear.png */,
 				362842671583E9E40039D943 /* 179-notepad.png */,
 				36CA3647157DC6CC002F91C6 /* 11-clock.png */,
 				36CA3648157DC6CC002F91C6 /* 112-group.png */,
@@ -255,6 +258,7 @@
 				36CA3650157DC6CC002F91C6 /* 83-calendar.png in Resources */,
 				362842571583CCB40039D943 /* MainStoryboard_iPad.storyboard in Resources */,
 				362842681583E9E40039D943 /* 179-notepad.png in Resources */,
+				362508351584F9CA001F3AEC /* 19-gear.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -18,14 +18,14 @@
 @interface MCDMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>{
 
     NSMutableDictionary *events;
+    NSString *attorneyFName;
+    NSString *attorneyMName;
+    NSString *attorneyLName;
 }
-
 
 @property (strong, nonatomic) MCDDetailViewController *detailViewController;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
-- (void)fetchEvents;
 
 @end
