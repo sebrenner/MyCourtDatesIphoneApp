@@ -68,96 +68,136 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Schedule" id="36"/>
-                    <connections>
-                        <outlet property="searchDisplayController" destination="gk1-sT-pWs" id="3vR-M3-Dfp"/>
-                    </connections>
                 </tableViewController>
-                <searchDisplayController id="zG3-Zo-OGp">
-                    <connections>
-                        <outlet property="delegate" destination="12" id="0wV-OT-bJW"/>
-                        <outlet property="searchContentsController" destination="12" id="YZD-OB-4lB"/>
-                        <outlet property="searchResultsDataSource" destination="12" id="PQC-aZ-Npw"/>
-                        <outlet property="searchResultsDelegate" destination="12" id="jmO-Q7-w2f"/>
-                    </connections>
-                </searchDisplayController>
-                <searchDisplayController id="gk1-sT-pWs">
-                    <connections>
-                        <outlet property="delegate" destination="12" id="EVA-uT-Hc0"/>
-                        <outlet property="searchContentsController" destination="12" id="N6d-G5-82g"/>
-                        <outlet property="searchResultsDataSource" destination="12" id="ipD-I7-vFe"/>
-                        <outlet property="searchResultsDelegate" destination="12" id="lfe-J6-gZ1"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="459" y="64"/>
         </scene>
-        <!--CaseHistory-->
-        <scene sceneID="Pig-9g-p5c">
+        <!--Case Details View Controller - Case Details-->
+        <scene sceneID="2sp-CH-A8H">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1F1-w3-uxo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController title="Schedule" id="7kK-Vf-RIe" userLabel="CaseHistory" customClass="MCDWebViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="SCv-kg-dWO">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6G9-iN-ZIN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController title="Case Details" id="3S4-Zk-1Dy" customClass="MCDCaseDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2qI-K0-F6Q">
+                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" scalesPageToFit="YES" id="PJ6-x1-WQv">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" id="THX-ey-W58">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="411"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Schedule" image="83-calendar.png" id="zvy-s4-F6A"/>
+                    <tabBarItem key="tabBarItem" title="Case Details" image="179-notepad.png" id="1LT-iG-kdR"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="caseHistoryWebView" destination="PJ6-x1-WQv" id="MrP-zv-lG4"/>
+                        <outlet property="caseHistoryWebView" destination="THX-ey-W58" id="6ed-TY-Ae9"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1554" y="362"/>
+            <point key="canvasLocation" x="1554" y="375"/>
         </scene>
-        <!--View Controller - Parties-->
+        <!--Schedule View Controller - Schedule-->
+        <scene sceneID="FaQ-XX-MPC">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qnM-Q9-mxh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="V8i-mX-v7z" customClass="MCDScheduleViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ev4-7t-Vay">
+                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" id="5y0-Ig-oCW">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="411"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Schedule" image="83-calendar.png" id="R4d-9a-hsK"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="caseScheduleWebView" destination="5y0-Ig-oCW" id="D8J-17-LdP"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="1935" y="375"/>
+        </scene>
+        <!--Parties View Controller - Parties-->
         <scene sceneID="gwz-RT-iz0">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5ah-lx-b4X" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController title="Parties" id="xqf-xH-8hw" sceneMemberID="viewController">
+                <viewController title="Parties" id="xqf-xH-8hw" customClass="MCDPartiesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fNT-pg-Gqm">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" id="10V-my-CKg">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="411"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Parties" image="112-group.png" id="NJ0-G2-NvG"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="casePartiesWebView" destination="10V-my-CKg" id="OFY-h1-1Jr"/>
+                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="1554" y="946"/>
         </scene>
-        <!--View Controller - Service-->
+        <!--Service View Controller - Service-->
         <scene sceneID="mf1-gD-6U5">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I8J-x2-zqo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController title="Service" id="ooH-3U-sH0" sceneMemberID="viewController">
+                <viewController title="Service" id="ooH-3U-sH0" customClass="MCDServiceViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pxa-DO-uP4">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" id="VTU-vf-Ule">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="411"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Service" image="18-envelope.png" id="Tdl-2F-Rb8"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="caseServiceWebView" destination="VTU-vf-Ule" id="ZiJ-ra-Eaa"/>
+                    </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="1981" y="965"/>
+            <point key="canvasLocation" x="1935" y="946"/>
         </scene>
-        <!--View Controller - Documents-->
+        <!--Documents View Controller - Documents-->
         <scene sceneID="fuf-YE-a8q">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="feP-rU-V7q" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController title="Documents" id="anv-9F-yrR" sceneMemberID="viewController">
+                <viewController title="Documents" id="anv-9F-yrR" customClass="MCDDocumentsViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fgQ-XM-VEA">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="411"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" id="rL6-Fn-guC">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="411"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Documents" image="33-cabinet.png" id="reM-Jm-zA8"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <connections>
+                        <outlet property="documentWebView" destination="rL6-Fn-guC" id="2ld-KG-OxV"/>
+                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="1935" y="-214"/>
@@ -235,10 +275,11 @@
                     </tabBar>
                     <connections>
                         <segue destination="SYW-yw-eaA" kind="relationship" relationship="viewControllers" id="1DM-S0-MGL"/>
-                        <segue destination="7kK-Vf-RIe" kind="relationship" relationship="viewControllers" id="tAD-z9-opD"/>
+                        <segue destination="V8i-mX-v7z" kind="relationship" relationship="viewControllers" id="gSF-4J-uEx"/>
                         <segue destination="anv-9F-yrR" kind="relationship" relationship="viewControllers" id="dRo-sp-vBQ"/>
                         <segue destination="xqf-xH-8hw" kind="relationship" relationship="viewControllers" id="WWz-TX-ntg"/>
                         <segue destination="ooH-3U-sH0" kind="relationship" relationship="viewControllers" id="wH4-bQ-MFo"/>
+                        <segue destination="3S4-Zk-1Dy" kind="relationship" relationship="viewControllers" id="GfV-iW-fut"/>
                     </connections>
                 </tabBarController>
             </objects>
@@ -248,11 +289,18 @@
     <resources>
         <image name="11-clock.png" width="25" height="25"/>
         <image name="112-group.png" width="32" height="21"/>
+        <image name="179-notepad.png" width="22" height="28"/>
         <image name="18-envelope.png" width="24" height="16"/>
         <image name="33-cabinet.png" width="20" height="26"/>
         <image name="83-calendar.png" width="23" height="25"/>
     </resources>
     <classes>
+        <class className="MCDCaseDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDCaseDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="caseHistoryWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
         <class className="MCDDetailViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDDetailViewController.h"/>
             <relationships>
@@ -263,13 +311,31 @@
                 <relationship kind="outlet" name="eventSetting" candidateClass="UILabel"/>
             </relationships>
         </class>
+        <class className="MCDDocumentsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDDocumentsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="documentWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
         <class className="MCDMasterViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDMasterViewController.h"/>
         </class>
-        <class className="MCDWebViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDWebViewController.h"/>
+        <class className="MCDPartiesViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDPartiesViewController.h"/>
             <relationships>
-                <relationship kind="outlet" name="caseHistoryWebView" candidateClass="UIWebView"/>
+                <relationship kind="outlet" name="casePartiesWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="MCDScheduleViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDScheduleViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="caseScheduleWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="MCDServiceViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDServiceViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="caseServiceWebView" candidateClass="UIWebView"/>
             </relationships>
         </class>
     </classes>

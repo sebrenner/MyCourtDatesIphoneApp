@@ -15,11 +15,17 @@
 		361290D9157BB12300D34EA9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290D8157BB12300D34EA9 /* main.m */; };
 		361290DD157BB12300D34EA9 /* MCDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290DC157BB12300D34EA9 /* MCDAppDelegate.m */; };
 		361290E0157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */; };
-		361290E3157BB12300D34EA9 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */; };
+		361290E3157BB12300D34EA9 /* oldMainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 361290E1157BB12300D34EA9 /* oldMainStoryboard_iPad.storyboard */; };
 		361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */; };
 		361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290E8157BB12300D34EA9 /* MCDMasterViewController.m */; };
 		361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 361290EB157BB12300D34EA9 /* MCDDetailViewController.m */; };
-		36CA3640157DB280002F91C6 /* MCDWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36CA363F157DB280002F91C6 /* MCDWebViewController.m */; };
+		362842571583CCB40039D943 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 362842561583CCB40039D943 /* MainStoryboard_iPad.storyboard */; };
+		3628425A1583D1300039D943 /* MCDScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842591583D1300039D943 /* MCDScheduleViewController.m */; };
+		3628425D1583D1480039D943 /* MCDDocumentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3628425C1583D1480039D943 /* MCDDocumentsViewController.m */; };
+		362842601583D1520039D943 /* MCDPartiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3628425F1583D1520039D943 /* MCDPartiesViewController.m */; };
+		362842631583D1620039D943 /* MCDServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842621583D1620039D943 /* MCDServiceViewController.m */; };
+		362842661583D16E0039D943 /* MCDCaseDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */; };
+		362842681583E9E40039D943 /* 179-notepad.png in Resources */ = {isa = PBXBuildFile; fileRef = 362842671583E9E40039D943 /* 179-notepad.png */; };
 		36CA364C157DC6CC002F91C6 /* 11-clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3647157DC6CC002F91C6 /* 11-clock.png */; };
 		36CA364D157DC6CC002F91C6 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3648157DC6CC002F91C6 /* 112-group.png */; };
 		36CA364E157DC6CC002F91C6 /* 18-envelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3649157DC6CC002F91C6 /* 18-envelope.png */; };
@@ -40,14 +46,24 @@
 		361290DB157BB12300D34EA9 /* MCDAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDAppDelegate.h; sourceTree = "<group>"; };
 		361290DC157BB12300D34EA9 /* MCDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDAppDelegate.m; sourceTree = "<group>"; };
 		361290DF157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
-		361290E2157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		361290E2157BB12300D34EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/oldMainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		361290E5157BB12300D34EA9 /* MyCourt_Dates.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyCourt_Dates.xcdatamodel; sourceTree = "<group>"; };
 		361290E7157BB12300D34EA9 /* MCDMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDMasterViewController.h; sourceTree = "<group>"; };
 		361290E8157BB12300D34EA9 /* MCDMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDMasterViewController.m; sourceTree = "<group>"; };
 		361290EA157BB12300D34EA9 /* MCDDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCDDetailViewController.h; sourceTree = "<group>"; };
 		361290EB157BB12300D34EA9 /* MCDDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCDDetailViewController.m; sourceTree = "<group>"; };
-		36CA363E157DB280002F91C6 /* MCDWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDWebViewController.h; sourceTree = "<group>"; };
-		36CA363F157DB280002F91C6 /* MCDWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDWebViewController.m; sourceTree = "<group>"; };
+		362842561583CCB40039D943 /* MainStoryboard_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		362842581583D1300039D943 /* MCDScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDScheduleViewController.h; sourceTree = "<group>"; };
+		362842591583D1300039D943 /* MCDScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDScheduleViewController.m; sourceTree = "<group>"; };
+		3628425B1583D1480039D943 /* MCDDocumentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDDocumentsViewController.h; sourceTree = "<group>"; };
+		3628425C1583D1480039D943 /* MCDDocumentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDDocumentsViewController.m; sourceTree = "<group>"; };
+		3628425E1583D1520039D943 /* MCDPartiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDPartiesViewController.h; sourceTree = "<group>"; };
+		3628425F1583D1520039D943 /* MCDPartiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDPartiesViewController.m; sourceTree = "<group>"; };
+		362842611583D1620039D943 /* MCDServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDServiceViewController.h; sourceTree = "<group>"; };
+		362842621583D1620039D943 /* MCDServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDServiceViewController.m; sourceTree = "<group>"; };
+		362842641583D16D0039D943 /* MCDCaseDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDCaseDetailsViewController.h; sourceTree = "<group>"; };
+		362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDCaseDetailsViewController.m; sourceTree = "<group>"; };
+		362842671583E9E40039D943 /* 179-notepad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "179-notepad.png"; sourceTree = "<group>"; };
 		36CA3647157DC6CC002F91C6 /* 11-clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock.png"; sourceTree = "<group>"; };
 		36CA3648157DC6CC002F91C6 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "112-group.png"; sourceTree = "<group>"; };
 		36CA3649157DC6CC002F91C6 /* 18-envelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "18-envelope.png"; sourceTree = "<group>"; };
@@ -101,17 +117,26 @@
 		361290D2157BB12300D34EA9 /* MyCourt Dates */ = {
 			isa = PBXGroup;
 			children = (
+				362842561583CCB40039D943 /* MainStoryboard_iPad.storyboard */,
+				361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */,
 				361290DB157BB12300D34EA9 /* MCDAppDelegate.h */,
 				361290DC157BB12300D34EA9 /* MCDAppDelegate.m */,
-				361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */,
-				36CA363E157DB280002F91C6 /* MCDWebViewController.h */,
-				36CA363F157DB280002F91C6 /* MCDWebViewController.m */,
-				361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */,
-				361290E7157BB12300D34EA9 /* MCDMasterViewController.h */,
-				361290E8157BB12300D34EA9 /* MCDMasterViewController.m */,
+				362842641583D16D0039D943 /* MCDCaseDetailsViewController.h */,
+				362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */,
 				361290EA157BB12300D34EA9 /* MCDDetailViewController.h */,
 				361290EB157BB12300D34EA9 /* MCDDetailViewController.m */,
+				3628425B1583D1480039D943 /* MCDDocumentsViewController.h */,
+				3628425C1583D1480039D943 /* MCDDocumentsViewController.m */,
+				361290E7157BB12300D34EA9 /* MCDMasterViewController.h */,
+				361290E8157BB12300D34EA9 /* MCDMasterViewController.m */,
+				3628425E1583D1520039D943 /* MCDPartiesViewController.h */,
+				3628425F1583D1520039D943 /* MCDPartiesViewController.m */,
+				362842581583D1300039D943 /* MCDScheduleViewController.h */,
+				362842591583D1300039D943 /* MCDScheduleViewController.m */,
+				362842611583D1620039D943 /* MCDServiceViewController.h */,
+				362842621583D1620039D943 /* MCDServiceViewController.m */,
 				361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */,
+				361290E1157BB12300D34EA9 /* oldMainStoryboard_iPad.storyboard */,
 				361290D3157BB12300D34EA9 /* Supporting Files */,
 			);
 			path = "MyCourt Dates";
@@ -132,6 +157,7 @@
 		36CA3646157DC6CC002F91C6 /* tabBarIcons */ = {
 			isa = PBXGroup;
 			children = (
+				362842671583E9E40039D943 /* 179-notepad.png */,
 				36CA3647157DC6CC002F91C6 /* 11-clock.png */,
 				36CA3648157DC6CC002F91C6 /* 112-group.png */,
 				36CA3649157DC6CC002F91C6 /* 18-envelope.png */,
@@ -194,12 +220,14 @@
 			files = (
 				361290D7157BB12300D34EA9 /* InfoPlist.strings in Resources */,
 				361290E0157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard in Resources */,
-				361290E3157BB12300D34EA9 /* MainStoryboard_iPad.storyboard in Resources */,
+				361290E3157BB12300D34EA9 /* oldMainStoryboard_iPad.storyboard in Resources */,
 				36CA364C157DC6CC002F91C6 /* 11-clock.png in Resources */,
 				36CA364D157DC6CC002F91C6 /* 112-group.png in Resources */,
 				36CA364E157DC6CC002F91C6 /* 18-envelope.png in Resources */,
 				36CA364F157DC6CC002F91C6 /* 33-cabinet.png in Resources */,
 				36CA3650157DC6CC002F91C6 /* 83-calendar.png in Resources */,
+				362842571583CCB40039D943 /* MainStoryboard_iPad.storyboard in Resources */,
+				362842681583E9E40039D943 /* 179-notepad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +243,11 @@
 				361290E6157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld in Sources */,
 				361290E9157BB12300D34EA9 /* MCDMasterViewController.m in Sources */,
 				361290EC157BB12300D34EA9 /* MCDDetailViewController.m in Sources */,
-				36CA3640157DB280002F91C6 /* MCDWebViewController.m in Sources */,
+				3628425A1583D1300039D943 /* MCDScheduleViewController.m in Sources */,
+				3628425D1583D1480039D943 /* MCDDocumentsViewController.m in Sources */,
+				362842601583D1520039D943 /* MCDPartiesViewController.m in Sources */,
+				362842631583D1620039D943 /* MCDServiceViewController.m in Sources */,
+				362842661583D16E0039D943 /* MCDCaseDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,12 +270,12 @@
 			name = MainStoryboard_iPhone.storyboard;
 			sourceTree = "<group>";
 		};
-		361290E1157BB12300D34EA9 /* MainStoryboard_iPad.storyboard */ = {
+		361290E1157BB12300D34EA9 /* oldMainStoryboard_iPad.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				361290E2157BB12300D34EA9 /* en */,
 			);
-			name = MainStoryboard_iPad.storyboard;
+			name = oldMainStoryboard_iPad.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

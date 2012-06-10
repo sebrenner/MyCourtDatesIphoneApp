@@ -1,21 +1,20 @@
 //
-//  MCDWebViewController.m
+//  MCDDocumentsViewController.m
 //  MyCourt Dates
 //
-//  Created by Scott Brenner on 6/4/12.
+//  Created by Scott Brenner on 6/9/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "MCDWebViewController.h"
+#import "MCDDocumentsViewController.h"
 
-@interface MCDWebViewController ()
+@interface MCDDocumentsViewController ()
 
 @end
 
-@implementation MCDWebViewController
-
-@synthesize detailItem = _detailItem;
-@synthesize caseHistoryWebView;
+@implementation MCDDocumentsViewController
+@synthesize detailItem=_detailItem;
+@synthesize documentWebView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,53 +31,37 @@
 	// Do any additional setup after loading the view.
     MCDAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     self.detailItem=appDelegate.currentEvent;
-    
-    [self loadCaseHistoryPage];
 
+    [self loadCaseHistoryPage];
 }
 
 - (void)viewDidUnload
 {
-    [self setCaseHistoryWebView:nil];
+    [self setDocumentWebView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
-
-- (void)setDetailItem:(id)newDetailItem
-{
-    NSLog(@"Executing in detailView: %@", NSStringFromSelector(_cmd));
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
-        
-        // Update the view.
-        [self loadCaseHistoryPage];
-    }
-    
-//    if (self.masterPopoverController != nil) {
-//        [self.masterPopoverController dismissPopoverAnimated:YES];
-//    }        
-}
 #pragma Mark
 
 -(void)loadCaseHistoryPage{
-    NSLog(@"Executing in detailView: %@", NSStringFromSelector(_cmd));
-
+    NSLog(@"Executing %@ in docsview for case number: %@", NSStringFromSelector(_cmd),[self.detailItem objectForKey:@"caseNumber"]);
+    
     NSString *caseHistoryUrlString = [[NSString alloc]initWithFormat:@"http://www.courtclerk.org/case_summary.asp?sec=history&casenumber=%@", [self.detailItem objectForKey:@"caseNumber"]];
     caseHistoryUrlString = [caseHistoryUrlString stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
     
-    NSLog(@"The url: %@", caseHistoryWebView);
+    NSLog(@"The url: %@", documentWebView);
     
     NSURL *caseHistoryUrl=[[NSURL alloc] initWithString:caseHistoryUrlString];
     
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:caseHistoryUrl];
-        
-    [self.caseHistoryWebView loadRequest:theRequest];
+    
+    [self.documentWebView loadRequest:theRequest];
 }
 
 @end
