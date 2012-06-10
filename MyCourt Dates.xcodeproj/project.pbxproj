@@ -26,6 +26,10 @@
 		362842631583D1620039D943 /* MCDServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842621583D1620039D943 /* MCDServiceViewController.m */; };
 		362842661583D16E0039D943 /* MCDCaseDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */; };
 		362842681583E9E40039D943 /* 179-notepad.png in Resources */ = {isa = PBXBuildFile; fileRef = 362842671583E9E40039D943 /* 179-notepad.png */; };
+		36C081201584781600B32CC5 /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C0811F1584781600B32CC5 /* libxml2.2.7.3.dylib */; };
+		36C081271584789800B32CC5 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C081221584789800B32CC5 /* TFHpple.m */; };
+		36C081281584789800B32CC5 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C081241584789800B32CC5 /* TFHppleElement.m */; };
+		36C081291584789800B32CC5 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C081261584789800B32CC5 /* XPathQuery.m */; };
 		36CA364C157DC6CC002F91C6 /* 11-clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3647157DC6CC002F91C6 /* 11-clock.png */; };
 		36CA364D157DC6CC002F91C6 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3648157DC6CC002F91C6 /* 112-group.png */; };
 		36CA364E157DC6CC002F91C6 /* 18-envelope.png in Resources */ = {isa = PBXBuildFile; fileRef = 36CA3649157DC6CC002F91C6 /* 18-envelope.png */; };
@@ -64,6 +68,13 @@
 		362842641583D16D0039D943 /* MCDCaseDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDCaseDetailsViewController.h; sourceTree = "<group>"; };
 		362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDCaseDetailsViewController.m; sourceTree = "<group>"; };
 		362842671583E9E40039D943 /* 179-notepad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "179-notepad.png"; sourceTree = "<group>"; };
+		36C0811F1584781600B32CC5 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
+		36C081211584789800B32CC5 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		36C081221584789800B32CC5 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		36C081231584789800B32CC5 /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		36C081241584789800B32CC5 /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		36C081251584789800B32CC5 /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		36C081261584789800B32CC5 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
 		36CA3647157DC6CC002F91C6 /* 11-clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock.png"; sourceTree = "<group>"; };
 		36CA3648157DC6CC002F91C6 /* 112-group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "112-group.png"; sourceTree = "<group>"; };
 		36CA3649157DC6CC002F91C6 /* 18-envelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "18-envelope.png"; sourceTree = "<group>"; };
@@ -76,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36C081201584781600B32CC5 /* libxml2.2.7.3.dylib in Frameworks */,
 				361290CB157BB12300D34EA9 /* UIKit.framework in Frameworks */,
 				361290CD157BB12300D34EA9 /* Foundation.framework in Frameworks */,
 				361290CF157BB12300D34EA9 /* CoreGraphics.framework in Frameworks */,
@@ -106,6 +118,7 @@
 		361290C9157BB12300D34EA9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				36C0811F1584781600B32CC5 /* libxml2.2.7.3.dylib */,
 				361290CA157BB12300D34EA9 /* UIKit.framework */,
 				361290CC157BB12300D34EA9 /* Foundation.framework */,
 				361290CE157BB12300D34EA9 /* CoreGraphics.framework */,
@@ -136,6 +149,8 @@
 				362842611583D1620039D943 /* MCDServiceViewController.h */,
 				362842621583D1620039D943 /* MCDServiceViewController.m */,
 				361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */,
+				36CA3646157DC6CC002F91C6 /* tabBarIcons */,
+				36C0812A158478BA00B32CC5 /* TFHpple */,
 				361290E1157BB12300D34EA9 /* oldMainStoryboard_iPad.storyboard */,
 				361290D3157BB12300D34EA9 /* Supporting Files */,
 			);
@@ -145,13 +160,25 @@
 		361290D3157BB12300D34EA9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				36CA3646157DC6CC002F91C6 /* tabBarIcons */,
 				361290D4157BB12300D34EA9 /* MyCourt Dates-Info.plist */,
 				361290D5157BB12300D34EA9 /* InfoPlist.strings */,
 				361290D8157BB12300D34EA9 /* main.m */,
 				361290DA157BB12300D34EA9 /* MyCourt Dates-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		36C0812A158478BA00B32CC5 /* TFHpple */ = {
+			isa = PBXGroup;
+			children = (
+				36C081211584789800B32CC5 /* TFHpple.h */,
+				36C081221584789800B32CC5 /* TFHpple.m */,
+				36C081231584789800B32CC5 /* TFHppleElement.h */,
+				36C081241584789800B32CC5 /* TFHppleElement.m */,
+				36C081251584789800B32CC5 /* XPathQuery.h */,
+				36C081261584789800B32CC5 /* XPathQuery.m */,
+			);
+			name = TFHpple;
 			sourceTree = "<group>";
 		};
 		36CA3646157DC6CC002F91C6 /* tabBarIcons */ = {
@@ -248,6 +275,9 @@
 				362842601583D1520039D943 /* MCDPartiesViewController.m in Sources */,
 				362842631583D1620039D943 /* MCDServiceViewController.m in Sources */,
 				362842661583D16E0039D943 /* MCDCaseDetailsViewController.m in Sources */,
+				36C081271584789800B32CC5 /* TFHpple.m in Sources */,
+				36C081281584789800B32CC5 /* TFHppleElement.m in Sources */,
+				36C081291584789800B32CC5 /* XPathQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,6 +363,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyCourt Dates/MyCourt Dates-Prefix.pch";
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "MyCourt Dates/MyCourt Dates-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -344,6 +375,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyCourt Dates/MyCourt Dates-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "MyCourt Dates/MyCourt Dates-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
