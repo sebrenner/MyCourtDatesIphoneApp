@@ -414,8 +414,8 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 
 - (void)parseAttorneyName:(NSString *) attorneyName{
     NSArray *nameItems = [attorneyName componentsSeparatedByString:@"/"];
-    self->attorneyFName = [nameItems objectAtIndex:0];
-    self->attorneyLName = [nameItems objectAtIndex:1];
+    self->attorneyFName = [nameItems objectAtIndex:1];
+    self->attorneyLName = [nameItems objectAtIndex:0];
     if ([nameItems count] > 2 ) {
         self->attorneyMName = [nameItems objectAtIndex:2];
     }
@@ -560,7 +560,9 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
         } //end of switch
         counter++;
     }//end of for loop
-    
+    if ([self storeScheduleDictionary:self]) {
+        NSLog(@"events dictioanary was successfully stored.");
+    } ;
     NSString *results = [[NSString alloc] initWithFormat:@"Here is the schedule for %@.  \nBar number %@.  \nThere are %d settings.",attorneyName, theId, [theEvents count] ];
 //    NSLog(results);
 //    NSLog(@"The Events from getSched func: %@", theEvents);
@@ -611,4 +613,37 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     //    NSLog(@"this is the html:%@", html)
     return html;
     }
+
+- (BOOL)storeScheduleDictionary:(id)sender {
+	NSString *docDir = [NSSearchPathForDirectoriesInDomains(
+                            NSDocumentDirectory,
+                            NSUserDomainMask, YES)
+                            objectAtIndex: 0];
+	NSString *scheduleFile = [docDir stringByAppendingPathComponent:
+							@"schedule.txt"];
+	if  (![[NSFileManager defaultManager] fileExistsAtPath:scheduleFile]) {
+		[[NSFileManager defaultManager]
+         createFileAtPath:scheduleFile contents:nil attributes:nil];
+	}
+    if ([self->events writeToFile:scheduleFile atomically:YES]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)retrieveScheduleDictionary:(id)sender {
+	NSString *docDir = [NSSearchPathForDirectoriesInDomains(
+                            NSDocumentDirectory,
+                            NSUserDomainMask, YES)
+                            objectAtIndex: 0];
+	NSString *scheduleFile = [docDir stringByAppendingPathComponent:
+                            @"schedule.txt"];
+	if  ([[NSFileManager defaultManager] fileExistsAtPath:scheduleFile]) {
+        self->events=[[NSMutableDictionary alloc]
+                      initWithContentsOfFile:scheduleFile];
+        return YES;
+	}
+    return NO;
+}
+
 @end
