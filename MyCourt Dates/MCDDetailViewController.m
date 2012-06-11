@@ -64,7 +64,9 @@
         }
         
         self.eventCaseNumber.text=[theEvent objectForKey:@"caseNumber"];
-        self.eventDateTime.text=[theEvent objectForKey:@"timeDate"];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"HH:mm EEE, MMM d, yyyy"];
+        self.eventDateTime.text=[dateFormat stringFromDate:[theEvent objectForKey:@"timeDate"]];
         self.eventSetting.text=[theEvent objectForKey:@"setting"];
         self.eventLocation.text=[theEvent objectForKey:@"location"];
         

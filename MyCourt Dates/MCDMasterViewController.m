@@ -36,11 +36,10 @@
 
     //  use fetch json
 //    [self fetchEventsForAttorneyId:@"73125"];
-//    [self->events removeAllObjects];
-
     //  use scrape from clerk
-    [self createScheduleForAttorneyId:@"73125"];
-    NSLog(@"Events Dictionary: %@", self->events);
+    [self createScheduleForAttorneyId:@"PP68519"];
+
+//    NSLog(@"Events Dictionary: %@", self->events);
     
 //    self.navigationItem.title= @"Scott was here";
     
@@ -117,10 +116,20 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSString *headerString =[[[self->events allKeys]
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd"];
+    
+    // Note this is pulling the key, not the date of the event
+    NSString *headerDate=[[[self->events allKeys]
                               sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
-//    NSLog(@"This is a section header:%@", headerString); 
-    return headerString;
+    
+    NSLog(@"This is a section header date object:%@", headerDate);
+
+
+    if ([[dateFormat stringFromDate:[NSDate date]] isEqualToString:headerDate]) {
+        return [[NSString alloc] initWithFormat:@"Today - %@", headerDate];
+    }
+    return headerDate;
 }
 
 //- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
@@ -405,45 +414,69 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 
 - (void)parseAttorneyName:(NSString *) attorneyName{
     NSArray *nameItems = [attorneyName componentsSeparatedByString:@"/"];
-    
     self->attorneyFName = [nameItems objectAtIndex:0];
     self->attorneyLName = [nameItems objectAtIndex:1];
-    self->attorneyMName = [nameItems objectAtIndex:2];
+    if ([nameItems count] > 2 ) {
+        self->attorneyMName = [nameItems objectAtIndex:2];
+    }
 }
 
 - (NSString *)createScheduleForAttorneyId:(NSString *)theId{
     NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
-    NSDateFormatter *date_formater=[[NSDateFormatter alloc]init];
-    [date_formater setDateFormat:@"Z"];
-//    NSString * tz=[date_formater stringFromDate:[NSDate date]];
-//    NSLog(@"Zone: %@", tz);    
-    
-    
+
     //  Get html as data.
     NSData *htmlData=[[self getHTMLScheduleForAttorneyId:theId] dataUsingEncoding:NSUTF8StringEncoding]; 
     
     //  Parse table cells to an array of elements.
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements = [xpathParser searchWithXPathQuery:@"/html//table//td//text()"];  // select text of every td of every table  
+    
     if ([elements count] <= 0 ) {
+        NSLog(@"No result returned from xpath query");
         return @"No result returned from xpath query";
     }
     
-    // extract and store attorney name.
+    NSString *noScheduleSentinel=[[NSString alloc] initWithString:[[elements objectAtIndex:15] content]];
+    
+    // Extract and store attorney name.
     NSString *attorneyName = [[NSString alloc] initWithString: [[elements objectAtIndex:7] content]];
     [self parseAttorneyName:attorneyName];
-    
+
+    if ([noScheduleSentinel isEqualToString:@"No schedules were found for the specified attorney."] ) {
+        NSLog(@"No active court dates listed on Clerk's site for %@", theId);
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd hh:mma"];
+        NSString *eventTime = [dateFormat stringFromDate:[NSDate date]];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateKey = [dateFormat stringFromDate:[NSDate date]];
+
+        
+        self->events=[[NSMutableDictionary alloc]initWithCapacity:1];
+        NSDictionary *todaysErrorMessage = [[NSDictionary alloc]initWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"active",
+                        theId, @"attorneyId",
+                        @"No Court Dates Scheduled", @"caseNumber",
+                        @"No Court Dates Scheduled", @"plaintiffs",
+                        @"No Court Dates Scheduled", @"defendants",
+                        @"No Court Dates Scheduled", @"setting",
+                        @"See CourtClerk.org for more Information", @"location",
+                        eventTime,@"timeDate", nil];
+        NSLog(@"the error event:%@", todaysErrorMessage);
+        NSArray *arrayOfOneEvent=[[NSArray alloc]initWithObjects:todaysErrorMessage, nil];
+        
+        [self->events setObject:arrayOfOneEvent forKey:dateKey];
+        return @"No active court dates listed on Clerk's site.";
+    }
+        
     // Create a subarray of just the event elements
     NSArray *eventElements = [elements subarrayWithRange:NSMakeRange(16, [elements count]-16)];
 
     //    The following block loops through the elements and 
     //    gangs them into event dictionaries and then adds the dictionary to a mutable array.
+    self->events=[[NSMutableDictionary alloc]initWithCapacity:200];
     NSMutableArray *theEvents=[NSMutableArray arrayWithCapacity:200];
     NSMutableDictionary *theEvent=[NSMutableDictionary dictionaryWithCapacity:6 ];
     NSDate *theDateTime;
     NSString *tempDate;
-//    NSMutableString *plaintiffs;
-//    NSMutableString *defendants;
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"MM/dd/yyyy HH:mm a"];
     [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"EST"]];
@@ -491,49 +524,42 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                 //                NSLog(@"The location: %@", [element content]);
                 [theEvent setObject:[element content] forKey:@"location"];
                 break;
-            case 19:
-                //                NSLog(@"The setting: %@\n*** New Event ***", [element content]);
+            case 19:{
+                // NSLog(@"The setting: %@\n*** New Event ***", [element content]);
                 [theEvent setObject:[element content] forKey:@"setting"];
                 [theEvent setObject:theId forKey:@"attorneyID"];
-                [theEvents addObject:[theEvent copy]];
-                //                NSLog(@"The Event: %@", theEvent);
-                //                [theEvent removeAllObjects];
-                counter = -5;
-                break;
+                
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"yyyy-MM-dd"];
+                NSString *dateKey = [dateFormat stringFromDate:[theEvent objectForKey:@"timeDate"]];
+                
+                NSMutableArray *arrayOfEvents;        
+            
+                if ([self->events objectForKey:dateKey]) {
+                    // If there is is an existing dictionary entry get the exising array.
+                    arrayOfEvents=[[NSMutableArray alloc]initWithArray:
+                                   [self->events objectForKey:dateKey]];
+                    // Add the current event to the existing array
+                    [arrayOfEvents addObject:[theEvent copy]];
+//                    NSLog(@"Added an event to an existing array of events.");
+                }else {
+                    arrayOfEvents = [[NSMutableArray alloc] initWithObjects:theEvent, nil];
+//                    NSLog(@"Created a new array to hold an event for %@.",dateKey);
+                }
+                //        add the array of events for that date to self->events
+//                NSLog(@"Are were getting here?\nHere is the current date: %@. The array looks like: %@", dateKey, arrayOfEvents);
+                
+                [self->events setObject:arrayOfEvents forKey:dateKey];
+//                NSLog(@"The events immediately after adding an array of events: %@",self->events);
+
+                counter = -5;  // reset the counter for parsing the next set of event elements.
+                break;}
             default:
                 //                NSLog(@"Pass: %@", [element content]);
                 break;
         } //end of switch
         counter++;
     }//end of for loop
-    
-//    NSLog(@"The events array: %@",theEvents);
-    
-    // Loop through the events and create a dictionary keyed on date.
-    // The values are arrays of events set on that date.
-    
-    for (NSDictionary *theEvent in theEvents)
-    {
-        NSMutableArray *arrayOfEvents;        
-        
-        NSDate *eventDate = [theEvent objectForKey:@"timeDate"];
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"yyyy-MM-dd"];
-        NSString *dateString = [dateFormat stringFromDate:eventDate];
-        
-        if ([self->events objectForKey:dateString]) {
-            // If there is is an existing dictionary entry
-            
-            arrayOfEvents=[[NSMutableArray alloc]initWithArray:
-                           [self->events objectForKey:dateString]];
-            [arrayOfEvents addObject:theEvent];
-        }else {
-            arrayOfEvents = [[NSMutableArray alloc] initWithObjects:theEvent, nil];
-        }
-//        add the array of events for that date to self->events
-        NSLog(@"Are were getting here?\nHere is what the current date: %@. The array looks like: %@", dateString, arrayOfEvents);
-        [self->events setObject:[arrayOfEvents copy] forKey:dateString];
-    }
     
     NSString *results = [[NSString alloc] initWithFormat:@"Here is the schedule for %@.  \nBar number %@.  \nThere are %d settings.",attorneyName, theId, [theEvents count] ];
 //    NSLog(results);
@@ -582,11 +608,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     NSString *theUrl = [[NSString alloc] initWithFormat:@"http://www.courtclerk.org/attorney_schedule_list_print.asp?court_party_id=%@", attorneyId];
     //    NSLog(@"this is the url:%@", theUrl);
     NSString *html= [NSString stringWithContentsOfURL:[NSURL URLWithString: theUrl] encoding:NSUTF8StringEncoding error:nil];
-    //    NSLog(@"this is the html:%@", html);
-    
+    //    NSLog(@"this is the html:%@", html)
     return html;
-    
-    return @"<html><head><title>Tracy Winkler - Clerk of Courts</title><meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'><link rel='stylesheet' type='text/css' href='/images/clerkwebss.css'></head><br><table width='775' cellpadding='0' cellspacing='0' border='0'><tr><td valign='top' width='650'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td><table width='100%' cellpadding='5' cellspacing='0' border='1' bordercolor='#003366'><tr class='tableheader'><td colspan='2' align='center'><div class='tableheader'>Schedules for Attorneys</div></td></tr><tr><td align='right'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr class='row2'><td width='25%'><strong>Attorney Name:</strong></td><td width='75%' align='left'>HEEKIN/THOMAS/D JR</td></tr><tr class='row1'><td><strong>Attorney ID:</strong></td><td>40784</td></tr><tr><td colspan='2'>&nbsp;</td></tr><tr><td colspan='2'><table width='100%' cellpadding='0' cellspacing='0' border='1'><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>5/21/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/12/CRB/5307'>C/12/CRB/5307</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. KATIE STENGER </td><td><strong>Status: </strong>I</td></tr><tr class='row1'><td><strong>Location: </strong>RM 124, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>REPORT HEARING</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/12/CRB/5307'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>5/22/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>10:30 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/12/TRC/4566'>/12/TRC/4566</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>CITY OF CINCINNATI vs. CORNELL E CLISBY</td><td><strong>Status: </strong>I</td></tr><tr class='row2'><td><strong>Location: </strong>RM 160, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>MOTION TO SUPPRESS</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/12/TRC/4566'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>5/24/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/12/TRD/17809'>C/12/TRD/17809</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. THOMAS D HEEKIN</td><td><strong>Status: </strong>I</td></tr><tr class='row1'><td><strong>Location: </strong>RM 154, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/12/TRD/17809'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>5/29/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/11/CRB/32404'>/11/CRB/32404</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. JULIAN ROGERS </td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>RM 264, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>NON-JURY TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/11/CRB/32404'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>5/29/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/12/CRB/5674'>/12/CRB/5674</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. VINCENT MCMULLEN </td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>RM 280, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/12/CRB/5674'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>5/29/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/11/CRB/28879'>C/11/CRB/28879</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. CHRISTOPHER PRICE </td><td><strong>Status: </strong>C</td></tr><tr class='row2'><td><strong>Location: </strong>H.C. COURT HOUSE ROOM 240</td><td><strong>Description: </strong>NON-JURY TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/11/CRB/28879'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>5/31/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:30 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=B 1106899'>B 1106899</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. JEREMY RUBY </td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>H.C. COURT HOUSE ROOM 485</td><td><strong>Description: </strong>OTHER</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=B 1106899'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/4/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/12/CRB/5307'>C/12/CRB/5307</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. KATIE STENGER </td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>RM 124, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>REPORT HEARING</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/12/CRB/5307'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/5/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/12/TRC/19850'>C/12/TRC/19850</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. AMANDA H DRIGGETT</td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>RM 144, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/12/TRC/19850'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/6/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/11/TRC/58784'>/11/TRC/58784</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. GWENDALYN MARGARET GATTAS</td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>H.C. COURTHOUSE ROOM 220</td><td><strong>Description: </strong>MOTION TO SUPPRESS</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/11/TRC/58784'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/6/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=B 1202295'>B 1202295</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. RODNEY CURETON </td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>H.C. COURT HOUSE ROOM 330</td><td><strong>Description: </strong>PLEA</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=B 1202295'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/7/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=B 0511652'>B 0511652</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. ANDREW WARRINGTON </td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>H.C. COURT HOUSE ROOM 510</td><td><strong>Description: </strong>SENTENCING</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=B 0511652'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/7/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>10:30 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/11/TRC/61410'>/11/TRC/61410</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>CITY OF CINCINNATI vs. JAY S FITTON</td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>RM 154, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>MOTION TO SUPPRESS</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/11/TRC/61410'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/12/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/11/CRB/28879'>C/11/CRB/28879</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. CHRISTOPHER PRICE </td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>H.C. COURT HOUSE ROOM 240</td><td><strong>Description: </strong>NON-JURY TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/11/CRB/28879'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/15/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/09/TRD/33431'>C/09/TRD/33431</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. DAVID  CARNES</td><td><strong>Status: </strong>I</td></tr><tr class='row1'><td><strong>Location: </strong>RM 174, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/09/TRD/33431'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/15/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/08/TRD/65442'>/08/TRD/65442</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>CITY OF CINCINNATI vs. DAVID CARNES </td><td><strong>Status: </strong>I</td></tr><tr class='row2'><td><strong>Location: </strong>RM 174, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/08/TRD/65442'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/15/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/09/TRD/6432'>/09/TRD/6432</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>CITY OF CINCINNATI vs. DAVID JR CARNES</td><td><strong>Status: </strong>I</td></tr><tr class='row1'><td><strong>Location: </strong>RM 174, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/09/TRD/6432'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/15/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/12/TRD/17809'>C/12/TRD/17809</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. THOMAS D HEEKIN</td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>RM 154, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/12/TRD/17809'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/20/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>10:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=B 1202199'>B 1202199</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. KENNETH LAMBERT </td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>H.C. COURT HOUSE ROOM 330</td><td><strong>Description: </strong>MOTIONS</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=B 1202199'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/27/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/11/TRD/61082/A'>C/11/TRD/61082/A</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. MAURICE  ABNEY</td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>RM 174, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>STAY</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/11/TRD/61082/A'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>6/27/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>10:30 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/12/TRC/4566'>/12/TRC/4566</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>CITY OF CINCINNATI vs. CORNELL E CLISBY</td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>RM 160, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>MOTION TO SUPPRESS</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/12/TRC/4566'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>7/10/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/08/TRD/65442'>/08/TRD/65442</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>CITY OF CINCINNATI vs. DAVID CARNES </td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>RM 174, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/08/TRD/65442'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>7/10/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/09/TRD/33431'>C/09/TRD/33431</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. DAVID  CARNES</td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>RM 174, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/09/TRD/33431'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>7/10/2012</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=/09/TRD/6432'>/09/TRD/6432</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>CITY OF CINCINNATI vs. DAVID JR CARNES</td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>RM 174, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>PRE-TRIAL</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=/09/TRD/6432'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row1'><td rowspan='3' align='center'><strong>Date:</strong><BR>2/6/2013</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=B 1105447--1'>B 1105447--1</A></td></tr><tr class='row1'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. KIMBERLY MICHELLE STEM</td><td><strong>Status: </strong>A</td></tr><tr class='row1'><td><strong>Location: </strong>RM 164, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>REPORT HEARING</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=B 1105447'>View Documents</a></td></tr></table></td></tr><tr><td colspan='2'><table cellpadding='0' cellspacing='0' border='0' width='100%'><tr class='row2'><td rowspan='3' align='center'><strong>Date:</strong><BR>4/18/2013</td><td rowspan='3' align='center'><strong>Time:</strong><BR>09:00 AM</td><td colspan='4'><strong>Case Number: </strong><A HREF='/case_summary.asp?casenumber=C/12/CRB/194'>C/12/CRB/194</A></td></tr><tr class='row2'><td colspan='3'><strong>Caption: </strong>STATE OF OHIO vs. MEGAN D FRENCH</td><td><strong>Status: </strong>A</td></tr><tr class='row2'><td><strong>Location: </strong>RM 124, CT HOUSE, 1000 MAIN ST</td><td><strong>Description: </strong>REPORT HEARING</td><td colspan='2'><a HREF='/case_summary.asp?sec=doc&casenumber=C/12/CRB/194'>View Documents</a></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td>&nbsp;</td></tr></table>&copy;&nbsp;2005 Patricia M. Clancy, Hamilton County Clerk of Courts. All rights reserved.</body></html>";    
-}
-
+    }
 @end
