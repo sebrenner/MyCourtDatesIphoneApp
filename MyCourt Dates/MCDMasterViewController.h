@@ -15,9 +15,10 @@
 
 #import <CoreData/CoreData.h>
 
-@interface MCDMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>{
+@interface MCDMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate>{
 
     NSMutableDictionary *events;
+    NSString *attorneyId;
     NSString *attorneyFName;
     NSString *attorneyMName;
     NSString *attorneyLName;

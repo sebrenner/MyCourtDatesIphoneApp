@@ -55,7 +55,7 @@
 -(void)loadCaseSchedulePage{
     NSLog(@"Executing in MCDScheduleViewController.m: %@", NSStringFromSelector(_cmd));
     
-    NSString *caseScheduleUrlString = [[NSString alloc]initWithFormat:@"http://www.courtclerk.org/case_summary.asp?sec=history&casenumber=%@", [self.detailItem objectForKey:@"caseNumber"]];
+    NSString *caseScheduleUrlString = [[NSString alloc]initWithFormat:@"http://www.courtclerk.org/case_summary.asp?sec=sched&casenumber=%@", [self.detailItem objectForKey:@"caseNumber"]];
     caseScheduleUrlString = [caseScheduleUrlString stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding];
     
     NSLog(@"The url: %@", caseScheduleUrlString);

@@ -28,29 +28,64 @@
     [super awakeFromNib];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
+    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+    
+    if ([userDefaults valueForKey:@"attorneyId"]) {
+        self->attorneyId=[userDefaults valueForKey:@"attorneyId"];
+    }else {
+        NSLog(@"No Attorney Id stored in preferences.  Showing pref alert.");
+        [self showAttorneyIdAlert];
+//        self->attorneyId = @"PP68519";
+        // in the future this should force a pop up or show the preferences window.
+    }
+    [self createScheduleForAttorneyId:self->attorneyId];
+    NSDate *vintage = [userDefaults valueForKey:@"scheduleVintage"];
+    NSLog(@"The vintage of the schedule on file is %@.", vintage);
+//    NSLog(@"The events dictionary loaded from file: %@", self->events);
+    [self.tableView reloadData];
+}
+
 - (void)viewDidLoad
 {
     NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
-    //  use fetch json
-//    [self fetchEventsForAttorneyId:@"73125"];
-    //  use scrape from clerk
-    [self createScheduleForAttorneyId:@"PP68519"];
-
-//    NSLog(@"Events Dictionary: %@", self->events);
-    
-//    self.navigationItem.title= @"Scott was here";
-    
-//    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-  
-    UIBarButtonItem *prefsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"19-gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(userPreferences)];
+    //    NSLog(@"Events Dictionary: %@", self->events);
+    //    self.navigationItem.leftBarButtonItem = self.editButtonItem    
+    UIBarButtonItem *prefsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"19-gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showAttorneyIdAlert)];
 
     self.navigationItem.rightBarButtonItem = prefsButton;
 
     self.detailViewController = (MCDDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 
+    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+    
+    if ([userDefaults valueForKey:@"attorneyId"]) {
+        self->attorneyId=[userDefaults valueForKey:@"attorneyId"];
+    }else {
+        NSLog(@"No Attorney Id stored in preferences.  Showing pref alert.");
+        [self showAttorneyIdAlert];
+        //        self->attorneyId = @"PP68519";
+        // in the future this should force a pop up or show the preferences window.
+    }
+    self.navigationItem.title= @"Scott was here";
+
+    //confirm that dictionaries match
+    [self createScheduleForAttorneyId:self->attorneyId];
+//    NSMutableDictionary *fromScrape = [[NSMutableDictionary alloc] initWithDictionary:[self->events copy]];
+//    
+//    [self retrieveScheduleDictionary:self->attorneyId];
+//    NSMutableDictionary *fromRetrieve = [[NSMutableDictionary alloc] initWithDictionary:[self->events copy]];
+//    
+//    NSLog(@"The length of the file dictionary: %d\nThe length of the scrape dictionary: %d",
+//          [fromRetrieve count], [fromScrape count]);
+//    if ([fromScrape isEqualToDictionary:fromRetrieve]) {
+//        NSLog(@"Yea they match.");
+//    }else {
+//        NSLog(@"Yea they don't match.");
+//    }
 }
 
 - (void)viewDidUnload
@@ -66,10 +101,6 @@
     } else {
         return YES;
     }
-}
-
-- (void)userPreferences{
-    NSLog(@"UserPreferences called");
 }
 
 - (void)insertNewObject:(id)sender
@@ -123,8 +154,7 @@
     NSString *headerDate=[[[self->events allKeys]
                               sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section];
     
-    NSLog(@"This is a section header date object:%@", headerDate);
-
+//    NSLog(@"This is a section header date object:%@", headerDate);
 
     if ([[dateFormat stringFromDate:[NSDate date]] isEqualToString:headerDate]) {
         return [[NSString alloc] initWithFormat:@"Today - %@", headerDate];
@@ -366,13 +396,48 @@
     cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
 }
 
+#pragma mark - Attorney Id Allert
+
+- (void)showAttorneyIdAlert{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+    UIAlertView *alertDialog;
+    NSString *title=[[NSString alloc]initWithFormat:@"Current Attorney Id: %@",self->attorneyId];
+    alertDialog = [[UIAlertView alloc]
+                   initWithTitle: title
+                   message:@"Please enter your Clerk of Courts Attorney Id:"
+                   delegate: self
+                   cancelButtonTitle: @"Ok"
+                   otherButtonTitles: nil];
+    alertDialog.alertViewStyle=UIAlertViewStylePlainTextInput;
+    [alertDialog show];
+}
+
+- (void)alertView:(UIAlertView *)alertView
+clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+    NSString *myAttorneyId=[[alertView textFieldAtIndex:0] text];
+    if ([myAttorneyId isEqualToString:self->attorneyId]) {
+        NSLog(@"the attorney id didn't change.");
+        return;
+    }else {
+        NSLog(@"the attorney id changed from %@ to %@.", self->attorneyId, myAttorneyId);
+        self->attorneyId = myAttorneyId;
+        [self->events removeAllObjects];
+        NSLog(@"Removed all objects from self->events: %@", self->events);
+        [self createScheduleForAttorneyId:self->attorneyId];
+        NSLog(@"Added new events to self->events: %@", self->events);
+        [self.tableView reloadData];
+        NSLog(@"Reloaded table");
+    }
+}
+
 #pragma mark - Data Retrieval
 
-- (void)fetchEventsForAttorneyId:(NSString *)attorneyId
+- (void)fetchEventsForAttorneyId
 {
 NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *urlStr=[[NSString alloc]initWithFormat:@"http://mycourtdates.com/json.php?id=%@", attorneyId];
+        NSString *urlStr=[[NSString alloc]initWithFormat:@"http://mycourtdates.com/json.php?id=%@", self->attorneyId];
         NSData* data = [NSData dataWithContentsOfURL:
                         [NSURL URLWithString: urlStr]];
         NSError* error;
@@ -413,11 +478,17 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 }
 
 - (void)parseAttorneyName:(NSString *) attorneyName{
+    NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
+    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+
     NSArray *nameItems = [attorneyName componentsSeparatedByString:@"/"];
     self->attorneyFName = [nameItems objectAtIndex:1];
+    [userDefaults setValue:self->attorneyFName forKey:@"attorneyFName"];
     self->attorneyLName = [nameItems objectAtIndex:0];
+    [userDefaults setValue:self->attorneyLName forKey:@"attorneyLName"];
     if ([nameItems count] > 2 ) {
         self->attorneyMName = [nameItems objectAtIndex:2];
+        [userDefaults setValue:self->attorneyMName forKey:@"attorneyMName"];
     }
 }
 
@@ -425,7 +496,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 
     //  Get html as data.
-    NSData *htmlData=[[self getHTMLScheduleForAttorneyId:theId] dataUsingEncoding:NSUTF8StringEncoding]; 
+    NSData *htmlData=[[self getHTMLScheduleForAttorneyId:(NSString *)theId] dataUsingEncoding:NSUTF8StringEncoding]; 
     
     //  Parse table cells to an array of elements.
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
@@ -436,13 +507,38 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
         return @"No result returned from xpath query";
     }
     
-    NSString *noScheduleSentinel=[[NSString alloc] initWithString:[[elements objectAtIndex:15] content]];
-    
+    if ([[[NSString alloc] initWithString:[[elements objectAtIndex:5] content]] 
+            isEqualToString:@"The attorney ID that you entered was invalid."]) {
+        NSLog(@"%@ is not a valid attorney id.", theId);
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd hh:mma"];
+        NSString *eventTime = [dateFormat stringFromDate:[NSDate date]];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateKey = [dateFormat stringFromDate:[NSDate date]];
+        
+        // Create an error event to populate the table
+        self->events=[[NSMutableDictionary alloc]initWithCapacity:1];
+        NSDictionary *todaysErrorMessage = [[NSDictionary alloc]initWithObjectsAndKeys:
+                                            @"Invalid Attorney Id", @"caseNumber",
+                                            @"Invalid Attorney Id", @"plaintiffs",
+                                            @"Invalid Attorney Id", @"defendants",
+                                            theId, @"attorneyId",
+                                            @"Invalid Attorney Id", @"setting",
+                                            @"See CourtClerk.org for more Information", @"location",
+                                            eventTime, @"timeDate",
+                                            [NSNumber numberWithBool:YES], @"active", nil];
+        NSLog(@"The invalid-Id error event:%@", todaysErrorMessage);
+        NSArray *arrayOfOneEvent=[[NSArray alloc]initWithObjects:todaysErrorMessage, nil];
+        
+        [self->events setObject:arrayOfOneEvent forKey:dateKey];
+        return [[NSString alloc] initWithFormat:@"%@ is not a valid attorney id.", theId];
+    }
+        
     // Extract and store attorney name.
     NSString *attorneyName = [[NSString alloc] initWithString: [[elements objectAtIndex:7] content]];
     [self parseAttorneyName:attorneyName];
 
-    if ([noScheduleSentinel isEqualToString:@"No schedules were found for the specified attorney."] ) {
+    if ([[[NSString alloc] initWithString:[[elements objectAtIndex:15] content]] isEqualToString:@"No schedules were found for the specified attorney."] ) {
         NSLog(@"No active court dates listed on Clerk's site for %@", theId);
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"yyyy-MM-dd hh:mma"];
@@ -452,7 +548,8 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 
         
         self->events=[[NSMutableDictionary alloc]initWithCapacity:1];
-        NSDictionary *todaysErrorMessage = [[NSDictionary alloc]initWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"active",
+        NSDictionary *todaysErrorMessage = [[NSDictionary alloc]initWithObjectsAndKeys:
+                        [NSNumber numberWithBool:YES], @"active",
                         theId, @"attorneyId",
                         @"No Court Dates Scheduled", @"caseNumber",
                         @"No Court Dates Scheduled", @"plaintiffs",
@@ -460,7 +557,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                         @"No Court Dates Scheduled", @"setting",
                         @"See CourtClerk.org for more Information", @"location",
                         eventTime,@"timeDate", nil];
-        NSLog(@"the error event:%@", todaysErrorMessage);
+        NSLog(@"the no-schedule error event:%@", todaysErrorMessage);
         NSArray *arrayOfOneEvent=[[NSArray alloc]initWithObjects:todaysErrorMessage, nil];
         
         [self->events setObject:arrayOfOneEvent forKey:dateKey];
@@ -561,7 +658,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
         counter++;
     }//end of for loop
     if ([self storeScheduleDictionary:self]) {
-        NSLog(@"events dictioanary was successfully stored.");
+        NSLog(@"events dictionary was successfully stored.");
     } ;
     NSString *results = [[NSString alloc] initWithFormat:@"Here is the schedule for %@.  \nBar number %@.  \nThere are %d settings.",attorneyName, theId, [theEvents count] ];
 //    NSLog(results);
@@ -603,11 +700,10 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     return defendants;
 }
 
-
-
-- (NSString *)getHTMLScheduleForAttorneyId:(NSString *)attorneyId{
+- (NSString *)getHTMLScheduleForAttorneyId:(NSString *)theId
+{
     NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
-    NSString *theUrl = [[NSString alloc] initWithFormat:@"http://www.courtclerk.org/attorney_schedule_list_print.asp?court_party_id=%@", attorneyId];
+    NSString *theUrl = [[NSString alloc] initWithFormat:@"http://www.courtclerk.org/attorney_schedule_list_print.asp?court_party_id=%@", self->attorneyId];
     //    NSLog(@"this is the url:%@", theUrl);
     NSString *html= [NSString stringWithContentsOfURL:[NSURL URLWithString: theUrl] encoding:NSUTF8StringEncoding error:nil];
     //    NSLog(@"this is the html:%@", html)
@@ -615,23 +711,30 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     }
 
 - (BOOL)storeScheduleDictionary:(id)sender {
+    // this method must be rewritten to allow saving of a separate attorney Id schedules.  Specifically it should take the dictionary of events and the attorney id as parameters and store based on them.  There may come a time when self->events ≠ the attorney's calendar.  self->events may contain more event than just the attorney's.
+    
+    NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 	NSString *docDir = [NSSearchPathForDirectoriesInDomains(
                             NSDocumentDirectory,
                             NSUserDomainMask, YES)
                             objectAtIndex: 0];
 	NSString *scheduleFile = [docDir stringByAppendingPathComponent:
-							@"schedule.txt"];
+							[[NSString alloc] initWithFormat:@"%@-schedule.txt",self->attorneyId]];
 	if  (![[NSFileManager defaultManager] fileExistsAtPath:scheduleFile]) {
 		[[NSFileManager defaultManager]
          createFileAtPath:scheduleFile contents:nil attributes:nil];
 	}
     if ([self->events writeToFile:scheduleFile atomically:YES]) {
+        NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+        [userDefaults setValue:[NSDate date] forKey:@"scheduleVintage"];
+        NSLog(@"Just wrote the events dictionary to file.");
         return YES;
     }
     return NO;
 }
 
 - (BOOL)retrieveScheduleDictionary:(id)sender {
+    NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 	NSString *docDir = [NSSearchPathForDirectoriesInDomains(
                             NSDocumentDirectory,
                             NSUserDomainMask, YES)
@@ -641,6 +744,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 	if  ([[NSFileManager defaultManager] fileExistsAtPath:scheduleFile]) {
         self->events=[[NSMutableDictionary alloc]
                       initWithContentsOfFile:scheduleFile];
+//        NSLog(@"Here is self->events after retreival from file:\n%@",self->events);
         return YES;
 	}
     return NO;

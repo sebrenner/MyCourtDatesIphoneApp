@@ -27,6 +27,7 @@
 		362842631583D1620039D943 /* MCDServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842621583D1620039D943 /* MCDServiceViewController.m */; };
 		362842661583D16E0039D943 /* MCDCaseDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */; };
 		362842681583E9E40039D943 /* 179-notepad.png in Resources */ = {isa = PBXBuildFile; fileRef = 362842671583E9E40039D943 /* 179-notepad.png */; };
+		3699A32215861B290088DE6D /* MCDPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3699A32115861B290088DE6D /* MCDPreferencesViewController.m */; };
 		36C081201584781600B32CC5 /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C0811F1584781600B32CC5 /* libxml2.2.7.3.dylib */; };
 		36C081271584789800B32CC5 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C081221584789800B32CC5 /* TFHpple.m */; };
 		36C081281584789800B32CC5 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C081241584789800B32CC5 /* TFHppleElement.m */; };
@@ -70,6 +71,8 @@
 		362842641583D16D0039D943 /* MCDCaseDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDCaseDetailsViewController.h; sourceTree = "<group>"; };
 		362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDCaseDetailsViewController.m; sourceTree = "<group>"; };
 		362842671583E9E40039D943 /* 179-notepad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "179-notepad.png"; sourceTree = "<group>"; };
+		3699A32015861B290088DE6D /* MCDPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDPreferencesViewController.h; sourceTree = "<group>"; };
+		3699A32115861B290088DE6D /* MCDPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDPreferencesViewController.m; sourceTree = "<group>"; };
 		36C0811F1584781600B32CC5 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
 		36C081211584789800B32CC5 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		36C081221584789800B32CC5 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
@@ -134,6 +137,8 @@
 			children = (
 				362842561583CCB40039D943 /* MainStoryboard_iPad.storyboard */,
 				361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */,
+				3699A32015861B290088DE6D /* MCDPreferencesViewController.h */,
+				3699A32115861B290088DE6D /* MCDPreferencesViewController.m */,
 				361290DB157BB12300D34EA9 /* MCDAppDelegate.h */,
 				361290DC157BB12300D34EA9 /* MCDAppDelegate.m */,
 				362842641583D16D0039D943 /* MCDCaseDetailsViewController.h */,
@@ -282,6 +287,7 @@
 				36C081271584789800B32CC5 /* TFHpple.m in Sources */,
 				36C081281584789800B32CC5 /* TFHppleElement.m in Sources */,
 				36C081291584789800B32CC5 /* XPathQuery.m in Sources */,
+				3699A32215861B290088DE6D /* MCDPreferencesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
