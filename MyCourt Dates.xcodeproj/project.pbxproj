@@ -27,6 +27,7 @@
 		362842631583D1620039D943 /* MCDServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842621583D1620039D943 /* MCDServiceViewController.m */; };
 		362842661583D16E0039D943 /* MCDCaseDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */; };
 		362842681583E9E40039D943 /* 179-notepad.png in Resources */ = {isa = PBXBuildFile; fileRef = 362842671583E9E40039D943 /* 179-notepad.png */; };
+		364BB46E158846DF0096AA64 /* MCDConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 364BB46D158846DF0096AA64 /* MCDConstants.m */; };
 		3699A32215861B290088DE6D /* MCDPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3699A32115861B290088DE6D /* MCDPreferencesViewController.m */; };
 		36C081201584781600B32CC5 /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 36C0811F1584781600B32CC5 /* libxml2.2.7.3.dylib */; };
 		36C081271584789800B32CC5 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C081221584789800B32CC5 /* TFHpple.m */; };
@@ -71,6 +72,8 @@
 		362842641583D16D0039D943 /* MCDCaseDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDCaseDetailsViewController.h; sourceTree = "<group>"; };
 		362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDCaseDetailsViewController.m; sourceTree = "<group>"; };
 		362842671583E9E40039D943 /* 179-notepad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "179-notepad.png"; sourceTree = "<group>"; };
+		364BB46C158846DF0096AA64 /* MCDConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDConstants.h; sourceTree = "<group>"; };
+		364BB46D158846DF0096AA64 /* MCDConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDConstants.m; sourceTree = "<group>"; };
 		3699A32015861B290088DE6D /* MCDPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCDPreferencesViewController.h; sourceTree = "<group>"; };
 		3699A32115861B290088DE6D /* MCDPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCDPreferencesViewController.m; sourceTree = "<group>"; };
 		36C0811F1584781600B32CC5 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
@@ -137,12 +140,12 @@
 			children = (
 				362842561583CCB40039D943 /* MainStoryboard_iPad.storyboard */,
 				361290DE157BB12300D34EA9 /* MainStoryboard_iPhone.storyboard */,
-				3699A32015861B290088DE6D /* MCDPreferencesViewController.h */,
-				3699A32115861B290088DE6D /* MCDPreferencesViewController.m */,
 				361290DB157BB12300D34EA9 /* MCDAppDelegate.h */,
 				361290DC157BB12300D34EA9 /* MCDAppDelegate.m */,
 				362842641583D16D0039D943 /* MCDCaseDetailsViewController.h */,
 				362842651583D16E0039D943 /* MCDCaseDetailsViewController.m */,
+				364BB46C158846DF0096AA64 /* MCDConstants.h */,
+				364BB46D158846DF0096AA64 /* MCDConstants.m */,
 				361290EA157BB12300D34EA9 /* MCDDetailViewController.h */,
 				361290EB157BB12300D34EA9 /* MCDDetailViewController.m */,
 				3628425B1583D1480039D943 /* MCDDocumentsViewController.h */,
@@ -151,15 +154,17 @@
 				361290E8157BB12300D34EA9 /* MCDMasterViewController.m */,
 				3628425E1583D1520039D943 /* MCDPartiesViewController.h */,
 				3628425F1583D1520039D943 /* MCDPartiesViewController.m */,
+				3699A32015861B290088DE6D /* MCDPreferencesViewController.h */,
+				3699A32115861B290088DE6D /* MCDPreferencesViewController.m */,
 				362842581583D1300039D943 /* MCDScheduleViewController.h */,
 				362842591583D1300039D943 /* MCDScheduleViewController.m */,
 				362842611583D1620039D943 /* MCDServiceViewController.h */,
 				362842621583D1620039D943 /* MCDServiceViewController.m */,
 				361290E4157BB12300D34EA9 /* MyCourt_Dates.xcdatamodeld */,
-				36CA3646157DC6CC002F91C6 /* tabBarIcons */,
-				36C0812A158478BA00B32CC5 /* TFHpple */,
 				361290E1157BB12300D34EA9 /* oldMainStoryboard_iPad.storyboard */,
 				361290D3157BB12300D34EA9 /* Supporting Files */,
+				36CA3646157DC6CC002F91C6 /* tabBarIcons */,
+				36C0812A158478BA00B32CC5 /* TFHpple */,
 			);
 			path = "MyCourt Dates";
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 				36C081281584789800B32CC5 /* TFHppleElement.m in Sources */,
 				36C081291584789800B32CC5 /* XPathQuery.m in Sources */,
 				3699A32215861B290088DE6D /* MCDPreferencesViewController.m in Sources */,
+				364BB46E158846DF0096AA64 /* MCDConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
