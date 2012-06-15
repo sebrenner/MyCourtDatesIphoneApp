@@ -39,40 +39,6 @@
 	// Do any additional setup after loading the view, typically from a nib.
     //    NSLog(@"Events Dictionary: %@", self->events);
     //    self.navigationItem.leftBarButtonItem = self.editButtonItem
-    NSDateFormatter *myDateFormat = [[NSDateFormatter alloc] init];
-    [myDateFormat setLenient:YES];
-    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-    [myDateFormat setLocale:usLocale];
-
-    NSArray *testTimes = [[NSArray alloc]initWithObjects:@"11:30 am",
-                                                        @"11:30 pm",
-                                                        @"01:30 pm",
-                                                        @"11:23 am",
-                                                        @"02:30 pm",
-                                                        @"09:45 am",
-                                                        @"12:00 pm",   nil ];
-    
-    for (NSString *myTime in testTimes) {    
-        [myDateFormat setDateFormat:@"h:mm aa"];
-        NSDate *myTempy = [myDateFormat dateFromString:myTime];
-        [myDateFormat setDateFormat:@"yyyy-MM-dd hh:mm aa"];
-        NSLog(@"This should be %@: %@", myTime, [myDateFormat stringFromDate:myTempy]);
-
-        [myDateFormat setDateFormat:@"h:mm a"];
-        myTempy = [myDateFormat dateFromString:myTime];
-        [myDateFormat setDateFormat:@"yyyy-MM-dd hh:mm a"];
-        NSLog(@"This should be %@: %@", myTime, [myDateFormat stringFromDate:myTempy]);
-
-        [myDateFormat setDateFormat:@"h:mma"];
-        myTempy = [myDateFormat dateFromString:myTime];
-        [myDateFormat setDateFormat:@"yyyy-MM-dd hh:mm aa"];
-        NSLog(@"This should be %@: %@", myTime, [myDateFormat stringFromDate:myTempy]);
-    }    
-    
-         
-    NSLog(@"is this my time zone--%@?",[myDateFormat timeZone]);
-    
-    NSLog(@"This should be the local time: %@", [myDateFormat stringFromDate:[NSDate date]]);
 
     UIBarButtonItem *prefsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"19-gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showAttorneyIdAlert)];
 
@@ -98,20 +64,6 @@
         [self retrieveScheduleDictionary:self];
     }
     
-//    NSMutableDictionary *fromScrape = [[NSMutableDictionary alloc] initWithDictionary:[self->events copy]];
-//    
-//    [self retrieveScheduleDictionary:self->attorneyId];
-//    NSMutableDictionary *fromRetrieve = [[NSMutableDictionary alloc] initWithDictionary:[self->events copy]];
-//    
-//    NSLog(@"The length of the file dictionary: %d\nThe length of the scrape dictionary: %d",
-//          [fromRetrieve count], [fromScrape count]);
-//    if ([fromScrape isEqualToDictionary:fromRetrieve]) {
-//        NSLog(@"Yea they match.");
-//    }else {
-//        NSLog(@"Yea they don't match.");
-//    }
-        NSLog(@"ViewDidLoad vintage: %@.", [userDefaults valueForKey:@"scheduleVintage"]);
-    //    NSLog(@"The events dictionary loaded from file: %@", self->events);
 //    [self.tableView reloadData];
 }
 
@@ -613,20 +565,11 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     NSString *tempDate;  //used to carry date from one for-loop interation to the one with the time.
     // Initialize the formatter.
     NSDateFormatter *eventDateFormat = [[NSDateFormatter alloc] init];
-    [eventDateFormat setDateFormat:@"MM/dd/yyyy HH:mm aa"];
-    [eventDateFormat setLenient:YES];
-    [eventDateFormat setLenient:YES];
     NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     [eventDateFormat setLocale:usLocale];
+    [eventDateFormat setDateFormat:@"MM/dd/yyyy HH:mm aa"];
+    [eventDateFormat setLenient:YES];
 
-    NSLog(@"This should be the local time: %@", [eventDateFormat stringFromDate:[NSDate date]]);
-        
-    // Initialize the calendar and flags.
-    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSWeekdayCalendarUnit;
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    NSDateComponents *eventDateTime;
-    
     int counter = 0;
     for (TFHppleElement *element in eventElements) {
 //        NSLog(@"%d: %@", counter, [element content]);
@@ -641,10 +584,10 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                 [eventDateFormat setDateFormat:@"MM/dd/yyyy h:mm aa"];
                 NSDate *tempTime = [eventDateFormat dateFromString:tempDate];
 
-                NSLog(@"these should match:%@ -> %@", [element content], [eventDateFormat stringFromDate:tempTime]);
+//                NSLog(@"these should match:%@ -> %@", [element content], [eventDateFormat stringFromDate:tempTime]);
 
                 [theEvent setObject:tempTime forKey:@"timeDate"];
-                NSLog(@"here is our event: %@", theEvent);
+//                NSLog(@"here is our event: %@", theEvent);
                 break;}
             case 7:
 //                NSLog(@"The case number: %@", [element content]);
@@ -725,8 +668,8 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     if ([self storeScheduleDictionary:self]) {
         NSLog(@"events dictionary was successfully stored.");
     } ;
-    NSLog(@"Here is the schedule for %@.  \nBar number %@.  \nThere are %d settings.",attorneyName, theId, [self->events count] );
-//    NSLog(@"The Events from getSched func: %@", theEvents);
+
+    //    NSLog(@"The Events from getSched func: %@", theEvents);
     return @"success";
 }
 
@@ -804,7 +747,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                             NSUserDomainMask, YES)
                             objectAtIndex: 0];
 	NSString *scheduleFile = [docDir stringByAppendingPathComponent:
-                            @"schedule.txt"];
+                              [[NSString alloc] initWithFormat:@"%@-schedule.txt",self->attorneyId]];
 	if  ([[NSFileManager defaultManager] fileExistsAtPath:scheduleFile]) {
         self->events=[[NSMutableDictionary alloc]
                       initWithContentsOfFile:scheduleFile];
@@ -816,7 +759,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 
 -(BOOL)isScheduleStale:(NSString *)theId{
     NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
-    return YES;
+//    return YES;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];     // this is only here to make the nslogs look better.
     [formatter setDateFormat:@"MM/dd/yyyy HH:mm aa"];
     

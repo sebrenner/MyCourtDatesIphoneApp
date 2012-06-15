@@ -295,6 +295,51 @@
         <image name="33-cabinet.png" width="20" height="26"/>
         <image name="83-calendar.png" width="23" height="25"/>
     </resources>
+    <classes>
+        <class className="MCDCaseDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDCaseDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="caseHistoryWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="MCDDetailViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDDetailViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="eventCaseCaption" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventCaseNumber" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventDateTime" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventLocation" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="eventSetting" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="MCDDocumentsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDDocumentsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="documentWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="MCDMasterViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDMasterViewController.h"/>
+        </class>
+        <class className="MCDPartiesViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDPartiesViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="casePartiesWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="MCDScheduleViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDScheduleViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="caseScheduleWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="MCDServiceViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MCDServiceViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="caseServiceWebView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
