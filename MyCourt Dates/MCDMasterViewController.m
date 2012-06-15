@@ -30,11 +30,6 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
-    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
-    NSDate *vintage = [userDefaults valueForKey:@"scheduleVintage"];
-    NSLog(@"The vintage of the schedule on file is %@.", vintage);
-//    NSLog(@"The events dictionary loaded from file: %@", self->events);
-    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -51,7 +46,7 @@
     self.detailViewController = (MCDDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 
     NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
-    
+        
     if ([userDefaults valueForKey:@"attorneyId"]) {
         NSLog(@"userDefaults for 'attorneyId' is: %@", [userDefaults valueForKey:@"attorneyId"]);
         self->attorneyId=[userDefaults valueForKey:@"attorneyId"];
@@ -62,7 +57,12 @@
     self.navigationItem.title= [[NSString alloc] initWithFormat:@"%@ %@ %@", self->attorneyFName,self->attorneyLName,self->attorneyId];
 
     //confirm that dictionaries match
-    [self createScheduleForattorneyId:self->attorneyId];
+    if ([self isScheduleStale:[userDefaults valueForKey:@"attorneyId"]]) {
+        [self createScheduleForattorneyId:self->attorneyId];
+    }else {
+        [self retrieveScheduleDictionary:self];
+    }
+    
 //    NSMutableDictionary *fromScrape = [[NSMutableDictionary alloc] initWithDictionary:[self->events copy]];
 //    
 //    [self retrieveScheduleDictionary:self->attorneyId];
@@ -75,6 +75,9 @@
 //    }else {
 //        NSLog(@"Yea they don't match.");
 //    }
+        NSLog(@"The vintage of the schedule on file is %@.", [userDefaults valueForKey:@"scheduleVintage"]);
+    //    NSLog(@"The events dictionary loaded from file: %@", self->events);
+//    [self.tableView reloadData];
 }
 
 - (void)viewDidUnload
@@ -203,10 +206,15 @@
                            stringWithFormat:@"%@ v.\n%@", plaintiffs,defendants];
         cell.textLabel.text=caption;
     }
-
+    // Initialize the formatter.
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterShortStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+//    NSLog(@"raw date from event: %@", [event objectForKey:@"timeDate"]);
     cell.detailTextLabel.text = [[NSString
                                  stringWithFormat:@"%@\nat %@",
-                                 [event objectForKey:@"timeDate"],
+                                 [formatter stringFromDate:[event objectForKey:@"timeDate"]],
                                  [event objectForKey:@"location"]]
                                  capitalizedString];
     
@@ -381,6 +389,7 @@
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"??????????%@", NSStringFromSelector(_cmd));
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
 }
@@ -423,7 +432,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     }
 }
 
-#pragma mark - Data Retrieval
+#pragma mark - Data Retrieval,storage, and processing
 
 - (void)fetchEventsForattorneyId
 {
@@ -570,7 +579,8 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     NSString *tempDate;
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"MM/dd/yyyy HH:mm a"];
-//    [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"EST"]];
+    [dateFormat setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"EST"]];
+    NSLog(@"This should be the local time: %@", [NSDate date]);
     
     int counter = 0;
     for (TFHppleElement *element in eventElements) {
@@ -594,7 +604,10 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                 break;
             case 10:{
                 // NSLog(@"The caption: %@", [element content]);
-                [theEvent setObject:[element content] forKey:@"caption"];
+                [theEvent setObject:[[element content]
+                                     stringByTrimmingCharactersInSet:
+                                        [NSCharacterSet whitespaceAndNewlineCharacterSet]]
+                                     forKey:@"caption"];
                 NSString *plaintiffs = [[NSString alloc] initWithString:[self extractPlaintiffsFromCaption:[element content]]];
                 NSString *defendants = [[NSString alloc] initWithString:[self extractDefendantsFromCaption:[element content]]];
                 [theEvent setObject:plaintiffs forKey:@"plaintiffs"];
@@ -609,7 +622,6 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 //                    NSLog(@"inactive");
                     [theEvent setObject:[NSNumber numberWithBool:NO] forKey:@"active"];
                 }
-                [theEvent setObject:[element content] forKey:@"activeStr"];
                 break;
             case 16:
                 //                NSLog(@"The location: %@", [element content]);
@@ -624,7 +636,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                 [dateFormat setDateFormat:@"yyyy-MM-dd"];
                 NSString *dateKey = [dateFormat stringFromDate:[theEvent objectForKey:@"timeDate"]];
                 
-                NSLog(@"The dateKey:%@.\t\tThe event: %@", dateKey, theEvent);
+                NSLog(@"The dateKey:%@.\tThe event timeDate: %@\tThe event: %@", dateKey,[theEvent objectForKey:@"timeDate"], theEvent);
                 NSMutableArray *arrayOfEvents;        
             
                 if ([self->events objectForKey:dateKey]) {
@@ -633,16 +645,14 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                                    [self->events objectForKey:dateKey]];
                     // Add the current event to the existing array
                     [arrayOfEvents addObject:[theEvent copy]];
-//                    NSLog(@"Added an event to an existing array of events.");
+                    NSLog(@"Added an event to an existing array of events.");
                 }else {
                     arrayOfEvents = [[NSMutableArray alloc] initWithObjects:theEvent, nil];
-//                    NSLog(@"Created a new array to hold an event for %@.",dateKey);
+                    NSLog(@"Created a new array to hold an event for %@.",dateKey);
                 }
-                //        add the array of events for that date to self->events
-//                NSLog(@"Are were getting here?\nHere is the current date: %@. The array looks like: %@", dateKey, arrayOfEvents);
-                
-                [self->events setObject:arrayOfEvents forKey:dateKey];
-//                NSLog(@"The events immediately after adding an array of events: %@",self->events);
+                // add the array of events for that date to self->events              
+                [self->events setObject:[arrayOfEvents copy] forKey:dateKey];
+                [arrayOfEvents removeAllObjects];
 
                 counter = -5;  // reset the counter for parsing the next set of event elements.
                 break;}
@@ -672,7 +682,8 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     plaintiffRange.location=0;
     plaintiffRange.length=vsPos.location-1;
 //    [NSRangeFromString(@"0,%d",vsPos.length);
-    NSString *plaintiffs = [theCaption substringWithRange:plaintiffRange];
+    NSString *plaintiffs = [[theCaption substringWithRange:plaintiffRange]stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+;
 //    NSLog(@"Plaintiffs: %@",plaintiffs);
     return plaintiffs;
 }
@@ -743,4 +754,123 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     return NO;
 }
 
+-(BOOL)isScheduleStale:(NSString *)theId{
+    NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
+    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+    NSDate *vintage = [userDefaults valueForKey:@"scheduleVintage"];
+    NSLog(@"The vintage of the schedule on file is %@.", vintage);
+
+    // if there is no vintage, return true.
+    if (!vintage) {
+        NSLog(@"The vintage (%@) is nil, nul, empty.", vintage);
+    }
+    // if the vintage is within 90 minutes, return false.
+    if ([vintage timeIntervalSinceNow] < 90 ) {
+        NSLog(@"The vintage (%@) is more than 90 minutes ago.", vintage);
+    }else {
+        NSLog(@"The vintage (%@) is less than 90 minutes ago.",vintage);
+    }
+    
+    // if the vintage is after 4:00 today, return false.
+    // today + 16 hours.
+    
+    // Initialize the calendar and flags.
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSWeekdayCalendarUnit;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    // Create reference date for supplied date.
+    NSDateComponents *todayComps = [calendar components:unitFlags fromDate:[NSDate date]];
+    [todayComps setHour:0];
+    [todayComps setMinute:0];
+    [todayComps setSecond:0];
+    NSDate *todayDate = [calendar dateFromComponents:todayComps];    
+    NSLog(@"This should be today's date with no time or at the first instant of the day: %@",todayDate);
+    
+    NSDate *todayAt4 = [NSDate dateWithTimeInterval:57600 sinceDate:todayDate];
+    NSLog(@"This should be today's date at 4:00: %@",todayAt4);
+    if ([vintage timeIntervalSinceDate:todayAt4] > 0) {
+        NSLog(@"The vintage (%@) is after 4:00 today.", vintage);
+    }
+
+    // if now is before 8:00am today and the vintage is after 4:00 yesterday, return false.
+    // today + 16 hours.
+    
+    NSDate *todayAt8 = [NSDate dateWithTimeInterval:28800 sinceDate:todayDate];
+    NSLog(@"This should be today's at 8:00am: %@",todayAt8);
+    NSDate *yesterdayAt4 = [NSDate dateWithTimeInterval:-28800 sinceDate:todayDate];
+    NSLog(@"This should be yesterday at 4:00pm: %@",yesterdayAt4);
+    if ([[NSDate date] timeIntervalSinceDate:todayAt8] < 0 && 
+        [vintage timeIntervalSinceDate:yesterdayAt4] > 0 ) {
+        NSLog(@"The vintage (%@) is after 4:00 yesterday and before 8:00 today.", vintage);
+    }
+
+    // if now is a weekend and the vintage is after 4:00 friday, return false.
+    return NO;
+    NSLog(@"No condition was matched.");
+}
+
+// snippet from BDDateTransformer.m //
+- (id)transformedValue:(NSDate *)date
+{
+    // Initialize the formatter.
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterShortStyle];
+    [formatter setTimeStyle:NSDateFormatterNoStyle];
+    
+    // Initialize the calendar and flags.
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSWeekdayCalendarUnit;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    // Create reference date for supplied date.
+    NSDateComponents *comps = [calendar components:unitFlags fromDate:date];
+    [comps setHour:0];
+    [comps setMinute:0];
+    [comps setSecond:0];
+    NSDate *suppliedDate = [calendar dateFromComponents:comps];
+    
+    // Iterate through the eight days (tomorrow, today, and the last six).
+    int i;
+    for (i = -1; i < 7; i++)
+    {
+        // Initialize reference date.
+        comps = [calendar components:unitFlags fromDate:[NSDate date]];
+        [comps setHour:0];
+        [comps setMinute:0];
+        [comps setSecond:0];
+        [comps setDay:[comps day] - i];
+        NSDate *referenceDate = [calendar dateFromComponents:comps];
+        // Get week day (starts at 1).
+        int weekday = [[calendar components:unitFlags fromDate:referenceDate] weekday] - 1;
+        
+        if ([suppliedDate compare:referenceDate] == NSOrderedSame && i == -1)
+        {
+            // Tomorrow
+            return [NSString stringWithString:@"Tomorrow"];
+        }
+        else if ([suppliedDate compare:referenceDate] == NSOrderedSame && i == 0)
+        {
+            // Today's time (a la iPhone Mail)
+            [formatter setDateStyle:NSDateFormatterNoStyle];
+            [formatter setTimeStyle:NSDateFormatterShortStyle];
+            return [formatter stringFromDate:date];
+        }
+        else if ([suppliedDate compare:referenceDate] == NSOrderedSame && i == 1)
+        {
+            // Today
+            return [NSString stringWithString:@"Yesterday"];
+        }
+        else if ([suppliedDate compare:referenceDate] == NSOrderedSame)
+        {
+            // Day of the week
+            NSString *day = [[formatter weekdaySymbols] objectAtIndex:weekday];
+            return day;
+        }
+    }
+    
+    // It's not in those eight days.
+    NSString *defaultDate = [formatter stringFromDate:date];
+    return defaultDate;
+}
+                        
+                        
 @end
