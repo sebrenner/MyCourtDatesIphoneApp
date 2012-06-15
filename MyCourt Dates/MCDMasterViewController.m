@@ -632,24 +632,19 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 //        NSLog(@"%d: %@", counter, [element content]);
         switch (counter) {
             case 1:
-//                NSLog(@"The date: %@", [element content]);
-                // create an NSDateComponent from the date string of element content
+                // store date as string
                 tempDate = [[NSString alloc] initWithString:[element content]];
-//                [eventDateFormat setDateFormat:@"MM/dd/yyyy"];
-//                eventDateTime = [calendar components:unitFlags fromDate:[eventDateFormat dateFromString:[element content]]];
                 break;
             case 4:{
+                // append time to date
                 tempDate = [tempDate stringByAppendingFormat:@" %@",[element content]];
-                NSLog(@"TempDate: %@", tempDate);
-                // Set the time components of eventDate Time expected format: 08:30 AM
                 [eventDateFormat setDateFormat:@"MM/dd/yyyy h:mm aa"];
-                [eventDateTime setTimeZone:[NSTimeZone timeZoneWithName:@"America/New_York"]];
                 NSDate *tempTime = [eventDateFormat dateFromString:tempDate];
 
                 NSLog(@"these should match:%@ -> %@", [element content], [eventDateFormat stringFromDate:tempTime]);
 
-                [theEvent setObject:[calendar dateFromComponents:eventDateTime] forKey:@"timeDate"];
-//                NSLog(@"here is our event dateTime:%@", [eventDateFormat stringFromDate:[calendar dateFromComponents:eventDateTime]]);
+                [theEvent setObject:tempTime forKey:@"timeDate"];
+                NSLog(@"here is our event: %@", theEvent);
                 break;}
             case 7:
 //                NSLog(@"The case number: %@", [element content]);
