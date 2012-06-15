@@ -40,9 +40,36 @@
     //    NSLog(@"Events Dictionary: %@", self->events);
     //    self.navigationItem.leftBarButtonItem = self.editButtonItem
     NSDateFormatter *myDateFormat = [[NSDateFormatter alloc] init];
-    [myDateFormat setDateFormat:@"MM/dd/yyyy HH:mm aa"];
+    [myDateFormat setLenient:YES];
     NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     [myDateFormat setLocale:usLocale];
+
+    NSArray *testTimes = [[NSArray alloc]initWithObjects:@"11:30 am",
+                                                        @"11:30 pm",
+                                                        @"01:30 pm",
+                                                        @"11:23 am",
+                                                        @"02:30 pm",
+                                                        @"09:45 am",
+                                                        @"12:00 pm",   nil ];
+    
+    for (NSString *myTime in testTimes) {    
+        [myDateFormat setDateFormat:@"h:mm aa"];
+        NSDate *myTempy = [myDateFormat dateFromString:myTime];
+        [myDateFormat setDateFormat:@"yyyy-MM-dd hh:mm aa"];
+        NSLog(@"This should be %@: %@", myTime, [myDateFormat stringFromDate:myTempy]);
+
+        [myDateFormat setDateFormat:@"h:mm a"];
+        myTempy = [myDateFormat dateFromString:myTime];
+        [myDateFormat setDateFormat:@"yyyy-MM-dd hh:mm a"];
+        NSLog(@"This should be %@: %@", myTime, [myDateFormat stringFromDate:myTempy]);
+
+        [myDateFormat setDateFormat:@"h:mma"];
+        myTempy = [myDateFormat dateFromString:myTime];
+        [myDateFormat setDateFormat:@"yyyy-MM-dd hh:mm aa"];
+        NSLog(@"This should be %@: %@", myTime, [myDateFormat stringFromDate:myTempy]);
+    }    
+    
+         
     NSLog(@"is this my time zone--%@?",[myDateFormat timeZone]);
     
     NSLog(@"This should be the local time: %@", [myDateFormat stringFromDate:[NSDate date]]);
@@ -583,22 +610,22 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
     //     the mutable array is stored in an mutable dictionary.
     self->events=[[NSMutableDictionary alloc]initWithCapacity:200];
     NSMutableDictionary *theEvent=[NSMutableDictionary dictionaryWithCapacity:6 ];
-    NSDate *theDateTime;
-    NSDate *eventDateTime;
-    NSString *tempDate;
+    NSString *tempDate;  //used to carry date from one for-loop interation to the one with the time.
     // Initialize the formatter.
     NSDateFormatter *eventDateFormat = [[NSDateFormatter alloc] init];
     [eventDateFormat setDateFormat:@"MM/dd/yyyy HH:mm aa"];
     [eventDateFormat setLenient:YES];
+    [eventDateFormat setLenient:YES];
+    NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    [eventDateFormat setLocale:usLocale];
+
     NSLog(@"This should be the local time: %@", [eventDateFormat stringFromDate:[NSDate date]]);
         
     // Initialize the calendar and flags.
     unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSWeekdayCalendarUnit;
     NSCalendar *calendar = [NSCalendar currentCalendar];
     
-    // Create reference date for supplied date.
-    NSDateComponents *comps;
-   
+    NSDateComponents *eventDateTime;
     
     int counter = 0;
     for (TFHppleElement *element in eventElements) {
@@ -606,27 +633,24 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
         switch (counter) {
             case 1:
 //                NSLog(@"The date: %@", [element content]);
-                [eventDateFormat setDateFormat:@"MM/dd/yyyy"];
-                eventDateTime = [eventDateFormat dateFromString:[element content]];
-
-                
-                
-                tempDate = [element content];
+                // create an NSDateComponent from the date string of element content
+                tempDate = [[NSString alloc] initWithString:[element content]];
+//                [eventDateFormat setDateFormat:@"MM/dd/yyyy"];
+//                eventDateTime = [calendar components:unitFlags fromDate:[eventDateFormat dateFromString:[element content]]];
                 break;
-            case 4:
-//                NSLog(@"The time: %@", [element content]);
+            case 4:{
                 tempDate = [tempDate stringByAppendingFormat:@" %@",[element content]];
-//                NSLog(@"tempDate: %@", tempDate);
-                
-                [eventDateFormat setDateFormat:@"MM/dd/yyyy HH:mm aa"];
-                [eventDateFormat setLenient:YES];
-                theDateTime = [eventDateFormat dateFromString:tempDate];
-                NSLog(@"setLenient:YES date:%@",theDateTime);
-                
-                [eventDateFormat setDateFormat:@"MM/dd/yyyy HH:mm aaa zzz"];
-//                NSLog(@"TheDateTime: %@", [eventDateFormat stringFromDate:theDateTime]);
-                [theEvent setObject:[theDateTime copy] forKey:@"timeDate"];
-                break;
+                NSLog(@"TempDate: %@", tempDate);
+                // Set the time components of eventDate Time expected format: 08:30 AM
+                [eventDateFormat setDateFormat:@"MM/dd/yyyy h:mm aa"];
+                [eventDateTime setTimeZone:[NSTimeZone timeZoneWithName:@"America/New_York"]];
+                NSDate *tempTime = [eventDateFormat dateFromString:tempDate];
+
+                NSLog(@"these should match:%@ -> %@", [element content], [eventDateFormat stringFromDate:tempTime]);
+
+                [theEvent setObject:[calendar dateFromComponents:eventDateTime] forKey:@"timeDate"];
+//                NSLog(@"here is our event dateTime:%@", [eventDateFormat stringFromDate:[calendar dateFromComponents:eventDateTime]]);
+                break;}
             case 7:
 //                NSLog(@"The case number: %@", [element content]);
                 [theEvent setObject:[[element content] copy] forKey:@"caseNumber"];
@@ -657,11 +681,11 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
                 [theEvent setObject:[[element content] copy] forKey:@"location"];
                 break;
             case 19:{
-                NSLog(@"\n\t\t*** New Event ***");
+//                NSLog(@"\n\t\t*** New Event ***");
                 [theEvent setObject:[[element content] copy] forKey:@"setting"];
                 [theEvent setObject:theId forKey:@"attorneyId"];
 
-                NSLog(@"\n\tThis is the event at just before the the dateKey work: %@\n", theEvent);
+//                NSLog(@"\n\tThis is the event at just before the the dateKey work: %@\n", theEvent);
             
                 NSDateFormatter *dateKeyFormat = [[NSDateFormatter alloc] init];
                 [dateKeyFormat setDateFormat:@"yyyy-MM-dd"];
@@ -670,31 +694,31 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 //                NSLog(@"\n\tThe dateKey: %@.\n\tThe event timeDate: %@\n\tThe event:\n%@", dateKey,[theEvent objectForKey:@"timeDate"], theEvent);
                 NSMutableArray *arrayOfEvents;        
 
-                NSLog(@"\n\tThis is the event at just after the the dateKey work & before adding the event to a nsmutablearray: %@\n\tThis is the NSMutableArray *arrayOfEvents: %@", theEvent, arrayOfEvents);
+//                NSLog(@"\n\tThis is the event at just after the the dateKey work & before adding the event to a nsmutablearray: %@\n\tThis is the NSMutableArray *arrayOfEvents: %@", theEvent, arrayOfEvents);
                 
                 if ([self->events objectForKey:dateKey]) {
                     // If there is is an existing dictionary entry get the existing array.
                     arrayOfEvents=[[NSMutableArray alloc]initWithArray:
                                    [self->events objectForKey:dateKey]];
-                    NSLog(@"\n\tThis is the event just after retrieveing the NSMutableArray *arrayOfEvents: %@.\n\tThis is the arrayOfEvents before the current event is added:%@", theEvent, arrayOfEvents);
+//                    NSLog(@"\n\tThis is the event just after retrieveing the NSMutableArray *arrayOfEvents: %@.\n\tThis is the arrayOfEvents before the current event is added:%@", theEvent, arrayOfEvents);
 
                     // Add the current event to the existing array
                     [arrayOfEvents addObject:[theEvent copy]];
-                    NSLog(@"\n\tAdded an event <%@> to an existing array of events: %@.",theEvent,arrayOfEvents);
+//                    NSLog(@"\n\tAdded an event <%@> to an existing array of events: %@.",theEvent,arrayOfEvents);
                     
                 }else {
                     arrayOfEvents = [[NSMutableArray alloc] initWithObjects:[theEvent copy], nil];
-                    NSLog(@"\n\tCreated a new array <%@> with the event <%@> for the datekey: %@.", arrayOfEvents, theEvent, dateKey);
+//                    NSLog(@"\n\tCreated a new array <%@> with the event <%@> for the datekey: %@.", arrayOfEvents, theEvent, dateKey);
                 }
 
-                NSLog(@"\n\tThis is the event <%@> just after adding the event to a nsmutablearray: %@\n", theEvent,arrayOfEvents);
+//                NSLog(@"\n\tThis is the event <%@> just after adding the event to a nsmutablearray: %@\n", theEvent,arrayOfEvents);
                 [theEvent removeAllObjects];
                 // add the array of events for that date to self->events
-                NSLog(@"\n\tThis is the self->events before adding the current event: %@", self->events);
+//                NSLog(@"\n\tThis is the self->events before adding the current event: %@", self->events);
                 [self->events setObject:[arrayOfEvents copy] forKey:dateKey];
-                NSLog(@"\n\tThis is the self->events: %@", self->events);
+//                NSLog(@"\n\tThis is the self->events: %@", self->events);
                 [arrayOfEvents removeAllObjects];
-                NSLog(@"\n\tThis is the arrayOfEvents after removing all objects: %@", arrayOfEvents);
+//                NSLog(@"\n\tThis is the arrayOfEvents after removing all objects: %@", arrayOfEvents);
                 counter = -5;  // reset the counter for parsing the next set of event elements.
                 break;}
             default:
@@ -797,6 +821,7 @@ NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
 
 -(BOOL)isScheduleStale:(NSString *)theId{
     NSLog(@"In this method: %@", NSStringFromSelector(_cmd));
+    return YES;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];     // this is only here to make the nslogs look better.
     [formatter setDateFormat:@"MM/dd/yyyy HH:mm aa"];
     
